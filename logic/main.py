@@ -1,13 +1,6 @@
 """A german game called 'Schiffe Versenken'"""
 
 import random
-# ToDo: Get the input-function to raise an error and thus bring us back to the main-function where
-#  finish or automatically start a new game if we entered "ur" (universal restart) or "us"
-#  (universal stop).
-# ToDo: Add this intro-string and make an uml-diagram.
-# ToDo: Test Cases.
-# ToDo: Befehlsinterface, dass alle Befehle verbietet, die mir gerade nicht passen, mit
-#  Anforderungssetzen (allow_all(), allow_all_but(), etc.)
 
 
 __author__ = "7157367, Seiffert"
