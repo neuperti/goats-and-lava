@@ -275,11 +275,11 @@ class Ship(set):
             )
         if positions & fleet.board != positions:
             print(
-                "couldn't add this ship because its off the board in",
+                "couldn't add this ship because it's off the board in",
                 " and ".join(list(str(i) for i in (positions - fleet.board)))
             )
             raise ValueError(
-                "couldn't add this ship because its off the board in",
+                "couldn't add this ship because it's off the board in",
                 " and ".join(list(str(i) for i in (positions - fleet.board)))
             )
         if len(positions) + len(fleet) > len(fleet.board) * .25:
