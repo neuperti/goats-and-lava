@@ -1,1 +1,1 @@
-Ship destroying, done for EPR in university.
+A fun variant of battleships, made with love for a module (EPR) in university.
