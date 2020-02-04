@@ -1,0 +1,32 @@
+   Ship Destroying
+   + ----------- +
+A game about destroying enemy fleets and leaving traumatised wifes, husbands and children grieve
+for the people you killed.
+
+The game consists of the following phases:
+
+(1) Setting the boards width (default is 10).
+(2) Registering the players (at least 2). Each player must have multiple ships, each of whom is a
+    row or a column and between 3 and 6 (both ends inclusive) fields long. Each player must plaster
+    10-25% of the entire field with its boats. It ships of one player may not overlap with each
+    each other, but with ships of other players.
+(3) A starting player is randomly determined.
+(4) The players take turns one after an other, until only one player is left. This player is the
+    winner. Players get "destroyed" by having all their shots destroyed.
+(5) In each turn, the player can shoot at random positions until they miss. As there may be more
+    than one player and each shot is fired against all players but the one who shot it, a player
+    may hit more than one ship with each shot. You will be told the number of ships and the names
+    of the players you hit with each shot, and you can view a map showing where you hit and where
+    you missed. You can also view a map showing where you where hit and where your ships are
+    positioned. Players will be told if they destroy a ship.
+
+The game may be started by running main.py or by running main_cmd.py, the later of whom imports
+the former and runs it with a command line interface instead of the default heavily guided one.
+As ship destroying is a game build open the underlying theme of trust in the original paper
+version (one can always just lie), the cmd-version is trust-based as well. As the order in which
+actions are performed is more free than in the guided version, one can switch more often and one
+manually decides when to flush the screen for privacy reasons and when not to and so on.
+
+If you are running said command-line version, use the command ?c to view a list of all commands.
+
+(Made by Philipp Seiffert)

@@ -1,0 +1,38 @@
+   Ship Destroying
+   + ----------- +
+Commands:
+
+Question-Options (?):
+  ?i: Show info.txt
+  ?c: Show commands.txt
+
+Display-functions (d):
+  df: Display flush (prints lots of whitespace to hide your input from the next player)
+  dd: Shows the defensive board for the current player (the board showing their ships and the hits
+      they took)
+  do: Shows the offensive board of the current player (where they hit and where they missed)
+
+Player-functions (p):
+  Only usable in initialization mode:
+  p+ [player_name]: Register player of the given name.
+  p- [player_name]: Delete player of the given name.
+  ps [player_name]: Switch to the player of the given name.
+
+Ship functions (s):
+  Only usable in initialization mode:
+  s+ [position as "row column"] [length as int] [direction as n, s, o or w]: Add a ship of the given
+     length going from the given position into the given direction
+
+Initialisation functions:
+  Only available during setup,  whilst everyone places their boats:
+  if: Finish initialisation. This will fail if some players fleets don't fulfill the requirements.
+
+Board functions:
+  bs [size]: Sets the boards size (Only available before any players are registered)
+  bb [position]: Bomb the given position of the Board.
+
+Game functions:
+  gq: Quits the game.
+  gr: Restarts the game.
+
+(Made by Philipp Seiffert)
