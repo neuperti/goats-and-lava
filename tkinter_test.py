@@ -4,14 +4,8 @@ from PIL import ImageTk
 
 import random
 
-colours = ['red', 'green', 'orange', 'white', 'yellow', 'blue']
-
 r = 0
 root = Tk()
-# for c in colours:
-#     Label(root, text=c, relief=RIDGE, width=15).grid(row=r, column=0)
-#     Entry(root, bg=c, relief=SUNKEN, width=10).grid(row=r, column=1)
-#     r = r + 1
 image = Image.open("images/goat.png")
 image = image.resize((50, 50), Image.ANTIALIAS)
 photo = ImageTk.PhotoImage(image)
