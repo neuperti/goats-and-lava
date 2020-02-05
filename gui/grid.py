@@ -6,10 +6,10 @@ SCREEN_HEIGHT = 0  # calculate this!
 
 
 class Grid(tk.Frame):
-    def __init__(self, queue, size=10):
+    def __init__(self, master, queue, size=10):
+        tk.Frame.__init__(self, master)
         self.update_size(size)
         self.queue = queue
-        #tkiniit aufrufen
 
     def update_size(self, size):
         self.cell_size = 0  # berechnet zellengröße
