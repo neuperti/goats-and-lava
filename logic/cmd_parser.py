@@ -8,18 +8,7 @@ __email__ = "philipp-seiffert@gmx.de"
 
 import sys
 import subprocess
-import main
-
-running_a_test = list()
-
-
-def test_input(start_inputs=[
-    line.split(">>> ")[1] for line in open("example_game.txt", "r").read().split("\n")
-    if ">>> " in line
-][1:]):
-    new_input = start_inputs.pop(0)
-    print("--> " + new_input)
-    return new_input
+import logic.main as main
 
 
 COMMANDS = {
@@ -80,19 +69,14 @@ class Fleet(main.Fleet):
             return False
 
 
-def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None, predefined_input=None):
+def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     """Lets player enter a command and process it."""
     # Take input, which may be predefined:
-    if predefined_input is not None:
-        command = predefined_input
-    else:
-        command = ""
-        while command == "":
-            if running_a_test:
-                command = test_input()
-            else:
-                command = input(">>> ")
-        command = command.split()
+    command = str()
+    while not command:
+        if board.queue:
+            command = board.queue.get()
+    command = command.split()
     order, *arguments = command
     error = None
     # Quit or restart the game:
@@ -100,7 +84,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None, p
         sys.exit()
     if order == "gr":
         subprocess.Popen(
-            [sys.executable, "main_cmd.py"],
+            [sys.executable, "main.py"],
             creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=".",
         )
         sys.exit()
@@ -144,11 +128,11 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None, p
     if not error:
         # doing commands that can always be done:
         if order == "?i":
-            with open("intro.txt", "r") as intro:
+            with open("logic/intro.txt", "r") as intro:
                 print(intro.read())
                 return None, None
         if order == "?c":
-            with open("commands.txt", "r") as commands:
+            with open("logic/commands.txt", "r") as commands:
                 print(commands.read())
                 return None, None
         if order == "df":

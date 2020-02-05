@@ -11,7 +11,7 @@ __email__ = "philipp-seiffert@gmx.de"
 class Board(set):
     """A board representing the visual boundaries of the ship."""
 
-    intro = open("intro.txt", "r").read()
+    intro = open("logic/intro.txt", "r").read()
 
     def __init__(self, size=10):
         """Initializes the board."""
