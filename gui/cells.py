@@ -10,6 +10,8 @@ class Cell(tk.Button):
             
 #### to send to grid
 if __name__ == "__main__":
+    def test_function():
+        print("YAY!")
     import os
     from pathlib import Path
     base_folder = os.path.dirname(__file__)
@@ -21,5 +23,4 @@ if __name__ == "__main__":
     new_cell = Cell(root, image, (1, 2), test_function)
     new_cell.pack()
     root.mainloop()
-    def test_function():
-        print("YAY!")
+    
