@@ -105,15 +105,15 @@ class Grid(tk.Frame):
         stone_on_lava = [self.images["stone_lava.png"]]
         if image_class == "grass":
             if randint(0,10) == 1:
-                image = goat.choice()
+                image = choice(goat)
             else:
-                image = grass.choice()
+                image = choice(grass)
         elif image_class == "lava":
-            image = lava_horizontal.choice()
+            image = choice(lava_horizontal)
         elif image_class == "stone_lava":
-            image = stone_on_lava.choice()
+            image = choice(stone_on_lava)
         elif image_class == "stone_grass":
-            image = stone_on_grass.choice()
+            image = choice(stone_on_grass)
 
 
 if __name__ == "__main__":
