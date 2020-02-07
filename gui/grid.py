@@ -41,10 +41,17 @@ class Grid(tk.Frame):
             self.cells[cell].grid_remove()
             del self.cells[cell]
         self.size = size
-        for x in range(1, size + 1):
-            for y in range(1, size + 1):
-                self.cells[(x, y)] = Cell(self, self.images["goat.png"], (x, y), self.cell_function)
-                self.cells[(x, y)].grid(row=x-1, column=y-1)
+        for x in range(0, size + 1):
+            for y in range(0, size + 1):
+                if x == 0 and y != 0:
+                    self.cells[(x, y)] = tk.Label(self, text=str(y))
+                elif y == 0 and x != 0:
+                    self.cells[(x, y)] = tk.Label(self, text=str(x))
+                elif x == 0 and y == 0:
+                    self.cells[(x, y)] = tk.Label(self, text=str())
+                else:
+                    self.cells[(x, y)] = Cell(self, self.images["goat.png"], (x, y), self.cell_function)
+                self.cells[(x, y)].grid(row=x, column=y)
 
     def change_function_of_cells(self, function):
         """changes the cell function when pressed"""
@@ -60,14 +67,12 @@ class Grid(tk.Frame):
         for image_name, coordinates in set_image_doubles:
             all_cell_coordinates |= coordinates
             for coordinate in coordinates:
-                if self.cells[coordinate].image is not self.images[image_name]:
-                    self.cells[coordinate].update_image(self.images[image_name])
-        for cell_coordinate in set(self.cells.keys()) - all_cell_coordinates:
-            self.cells[cell_coordinate].update_image(standard_image)
-
-    def update_cell(self, coordinates, image):
-        """updates the state of one cell"""
-
+                if 0 not in coordinate:  # assuring, that labels are not regarded as proper cells
+                    if self.cells[coordinate].image is not self.images[image_name]:
+                        self.cells[coordinate].update_image(self.images[image_name])
+        for coordinate in set(self.cells.keys()) - all_cell_coordinates:
+            if 0 not in coordinate:  # assuring, that labels are not regarded as proper cells
+                self.cells[coordinate].update_image(standard_image)
 
     def test_function(self):
         """for testing only"""
@@ -77,8 +82,9 @@ class Grid(tk.Frame):
 if __name__ == "__main__":
     """for testing only"""
     root = tk.Tk()
-    image = tk.PhotoImage(file=absolute_path("/images/goat.png"))
     test_grid = Grid(root, None)
     test_grid.pack()
-    test_grid.draw(10, "grass.png", ("goat.png", {(2, 4), (8, 2)}))
+    test_grid.draw(10, "grass.png", ("goat.png", {(2, 4), (8, 2)}), ("stone_grass.png", {(1, 1), (5, 5)}),
+                   ("lava.png", {(3, 4), (3, 5), (3, 7)}), ("stone_lava.png", {(3, 6)})
+                   )
     root.mainloop()
