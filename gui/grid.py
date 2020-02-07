@@ -29,6 +29,7 @@ class Grid(tk.Frame):
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
         self.update_size(size)
+        self.cell_function = None
         self.after(1000, self.check_print_queue)
 
     def check_print_queue(self):
