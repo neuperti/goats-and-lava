@@ -19,3 +19,9 @@ class MainWindow(tk.Tk):
         self.grid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.console_manager = ConsoleManager(self, queue)
         self.console_manager.pack(side=tk.LEFT, fill=tk.Y)
+
+    def finish_initialisation(self):
+        self.player_manager.finish_initialisation()
+        self.grid.cell_function = lambda coordinates: (
+            self.queue.append("bb " + str(coordinates[0]) + " " + str(coordinates[1]))
+        )

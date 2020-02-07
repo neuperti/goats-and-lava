@@ -33,7 +33,8 @@ class Board(main.Board):
         )
         while len(self.player_fleets) > 1:
             player_name = player_names[actual_player]
-            self.player_fleets[player_name].draw_offensive()
+            if player_name:
+                self.player_fleets[player_name].draw_offensive()
             self.queue.append("df")
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
@@ -63,11 +64,12 @@ class Board(main.Board):
                 )
             except RuntimeError:
                 pass
-            if order is None:
+            if not order:
                 pass
             elif order == "switched to":
                 active_player = arguments
-                self.player_fleets[active_player].draw_defensive()
+                if active_player:
+                    self.player_fleets[active_player].draw_defensive()
                 self.queue.append("df")
             elif order == "deleted":
                 if active_player not in self.player_fleets:
@@ -101,7 +103,7 @@ class Board(main.Board):
 
             except RuntimeError:
                 pass
-            if order is None:
+            if not order:
                 pass
             elif order is "shoot":
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
