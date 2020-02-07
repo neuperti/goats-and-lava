@@ -2,9 +2,11 @@ import tkinter as tk
 import os
 from pathlib import Path
 from gui.cells import Cell
+from random import choice, randint
 
 
 IMAGE_WIDTH = 1000
+DEFAULT_IMAGE = "blank.png"
 
 
 def absolute_path(relative_path):
@@ -27,13 +29,6 @@ class Grid(tk.Frame):
         self.images = dict()
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
-        image_filenames = os.listdir(absolute_path("/images"))
-        for filename in image_filenames:
-            image = tk.PhotoImage(file=absolute_path("/images/" + filename))
-            image = image.zoom(int(self.screen_height * .9) // 100)
-            image = image.subsample(size*IMAGE_WIDTH//100)  # adapts image depending on grid size and screen size
-            self.images[filename] = image
-        print(self.images)
         self.update_size(size)
         self.after(1000, self.check_print_queue)
 
@@ -47,6 +42,12 @@ class Grid(tk.Frame):
 
     def update_size(self, size):
         """generates grid of cells"""
+        image_filenames = os.listdir(absolute_path("/images"))
+        for filename in image_filenames:
+            image = tk.PhotoImage(file=absolute_path("/images/" + filename))
+            image = image.zoom(int(self.screen_height * .9) // 100)
+            image = image.subsample(size * IMAGE_WIDTH // 100)  # adapts image depending on grid size and screen size
+            self.images[filename] = image
         for cell in list(self.cells.keys()):  # remove old cells
             self.cells[cell].grid_remove()
             del self.cells[cell]
@@ -60,7 +61,7 @@ class Grid(tk.Frame):
                 elif x == 0 and y == 0:
                     self.cells[(x, y)] = tk.Label(self, text=str())
                 else:
-                    self.cells[(x, y)] = Cell(self, self.images["goat.png"], (x, y), self.cell_function)
+                    self.cells[(x, y)] = Cell(self, self.images[DEFAULT_IMAGE], (x, y), self.cell_function)
                 self.cells[(x, y)].grid(row=x, column=y)
 
     def change_function_of_cells(self, function):
@@ -71,18 +72,48 @@ class Grid(tk.Frame):
         """updates the images of cells which changed"""
         print("wuwu", self, standard_image, set_image_doubles)
         all_cell_coordinates = set()
-        standard_image = self.images[standard_image]
         # set_image_doubles are
         for image_name, coordinates in set_image_doubles:
             all_cell_coordinates |= coordinates
             for coordinate in coordinates:
                 if 0 not in coordinate:  # assuring, that labels are not regarded as proper cells
-                    if self.cells[coordinate].image is not self.images[image_name]:
-                        self.cells[coordinate].update_image(self.images[image_name])
+                    if self.cells[coordinate].image is not self.get_image(image_name):
+                        self.cells[coordinate].update_image(self.get_image(image_name))
         for coordinate in set(self.cells.keys()) - all_cell_coordinates:
             if 0 not in coordinate:  # assuring, that labels are not regarded as proper cells
-                self.cells[coordinate].update_image(standard_image)
+                self.cells[coordinate].update_image(self.get_image(standard_image))
 
+    def get_image(self, image_class):
+        grass = [
+            self.images["grass1.png"],
+            self.images["grass2.png"],
+            self.images["grass3.png"],
+            self.images["grass4.png"],
+        ]
+        goat = [
+            self.images["goat1.png"],
+            self.images["goat2.png"],
+            self.images["goat3.png"],
+        ]
+        lava_horizontal = [self.images["lava.png"]]
+        lava_vertical = [self.images["lava.png"]]
+        lava_end_up = [self.images["lava.png"]]
+        lava_end_down = [self.images["lava.png"]]
+        lava_end_right = [self.images["lava.png"]]
+        lava_end_left = [self.images["lava.png"]]
+        stone_on_grass = [self.images["stone_grass.png"]]
+        stone_on_lava = [self.images["stone_lava.png"]]
+        if image_class == "grass":
+            if randint(0,10) == 1:
+                image = goat.choice()
+            else:
+                image = grass.choice()
+        elif image_class == "lava":
+            image = lava_horizontal.choice()
+        elif image_class == "stone_lava":
+            image = stone_on_lava.choice()
+        elif image_class == "stone_grass":
+            image = stone_on_grass.choice()
 
 
 if __name__ == "__main__":
