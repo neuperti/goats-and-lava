@@ -15,6 +15,9 @@ class Grid(tk.Frame):
     def __init__(self, master, queue, size=10):
         tk.Frame.__init__(self, master)
         self.cell_function = None
+        self.cell_size = 0  # berechnet zellengröße
+        self.cells = dict()
+        self.size = size
         #os.
         self.queue = queue
         self.images = dict()
@@ -27,16 +30,12 @@ class Grid(tk.Frame):
             image = tk.PhotoImage(file=absolute_path("/images/" + filename))
             image = image.zoom(int(self.screen_height * .9) // 100)
             image = image.subsample(size*3)  # adapts image depending on grid size and screen size
-
             self.images[filename] = image
         print(self.images)
         self.update_size(size)
 
     def update_size(self, size):
-        self.cell_size = 0  # berechnet zellengröße
-        self.cells = dict()
-        self.size = size
-        # generates grid of cells
+        """generates grid of cells"""
         for x in range(1, size + 1):
             for y in range(1, size + 1):
                 self.cells[(x, y)] = Cell(self, self.images["goat.png"], (x, y), self.cell_function)
@@ -60,15 +59,14 @@ class Grid(tk.Frame):
         self.cells[coordinates].image = image
 
     def test_function(self):
-        """only for testing"""
+        """for testing only"""
         print("YAY!")
 
 
 if __name__ == "__main__":
-    # for testing
+    """for testing only"""
     root = tk.Tk()
     image = tk.PhotoImage(file=absolute_path("/images/goat.png"))
-    test_grid = Grid(root, None, 10)
+    test_grid = Grid(root, None)
     test_grid.pack()
     root.mainloop()
-    
