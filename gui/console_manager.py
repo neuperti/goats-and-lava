@@ -10,7 +10,7 @@ class CommandRunner(tk.Frame):
             self,
             text="Run Command (e.g. ?c)",
             command=lambda *args: (
-                queue.append(text_field.get()) or text_field.delete(0, tk.END)
+                queue.append(text_field.get()) and text_field.delete(0, tk.END)
             )
         )
         text_validator.pack(side=tk.LEFT)
@@ -29,7 +29,8 @@ class ConsoleManager(tk.Frame):
     def load_from_queue(self):
         new_printable = self.queue.print_queue.get(wait_for_content=False)
         if new_printable:
+            self.console_field.configure(state=tk.NORMAL)
             self.console_field.insert(tk.END, new_printable)
-            print("successfully called!")
+            self.console_field.see(tk.END)
+            self.console_field.configure(state=tk.DISABLED)
         self.after(1000, lambda: self.load_from_queue())
-        print("called!")

@@ -100,7 +100,6 @@ class Board(main.Board):
             if order is None:
                 pass
             elif order is "shoot":
-                if target_position in self.player_fleets[own_name].positions_missed:
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
                 if successful_hit:
                     self.queue.print_queue.append("Successfully hit " + str(successful_hit) + " targets!")

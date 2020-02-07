@@ -1,6 +1,7 @@
 """A german game called 'Schiffe Versenken'"""
 
 import random
+from tkinter.messagebox import askyesno
 
 
 __author__ = "7157367, Seiffert"
@@ -60,8 +61,17 @@ class Board(set):
         successes = 0
         for player_name in list(self.player_fleets.keys()):
             if player_name != own_name:
-                if pos in self.player_fleets[own_name].positions_missed:
-                    
+                if pos in (
+                    self.player_fleets[own_name].positions_missed
+                    | self.player_fleets[own_name].positions_hit
+                ):
+                    if askyesno("Rock + Rock = Rock", "Do you really want to shoot at rocks?"):
+                        self.queue.print_queue.append("Okay, then.")
+                    else:
+                        self.queue.print_queue.append(
+                            "That's wiser. I'll count this wisdom as hitting 0.1 boats, take it\
+as a cookie!")
+                        return 0.1
                 fleet = self.player_fleets[player_name]
                 hit = fleet.shoot_at_given_position(pos)
                 if hit:
@@ -187,7 +197,7 @@ class Fleet(set):
 
     def draw_defensive(self):
         """Draws the state of the fleet."""
-        lines = [
+        """lines = [
             "your fleet (# is your boat, x shows sunk boats):",
             "+" + "-" * self.board.size + "+"
         ]
@@ -202,14 +212,19 @@ class Fleet(set):
                 else:
                     sign = " "
                 new_line += sign
-            new_line += "|"
+             new_line += "|"
             lines.append(new_line)
         lines.append("+" + "-" * self.board.size + "+")
-        print("\n".join(lines))
+        print("\n".join(lines))"""
+        self.board.queue.draw_queue.append((
+            "grass.png",
+            ("lava.png", self),
+            ("stone_lava.png", self.taken_hits),
+        ))
 
     def draw_offensive(self):
         """Draws the board for a specific player to shoot."""
-        lines = [
+        """lines = [
             "the board (~ means you missed, x you hit):",
             "+" + "-" * self.board.size + "+"
         ]
@@ -227,22 +242,27 @@ class Fleet(set):
             new_line += "|"
             lines.append(new_line)
         lines.append("+" + "-" * self.board.size + "+")
-        print("\n".join(lines))
+        print("\n".join(lines))"""
+        self.board.print_queue.draw_queue.append((
+            "blue.png",
+            ("stone_lava.png", self.positions_hit),
+            ("stone_grass.png", self.positions_missed)
+        ))
 
     def shoot_at_given_position(self, pos):
         """Shoots at the given position and triggers all the consequences.
         Returns if the player is allowed an other shot."""
         if pos in self:
-            print("you hit a boat! ...of player " + self.player_name)
+            self.board.queue.print_queue.append("you hit a boat! ...of player " + self.player_name)
             self.remove(pos)
             self.taken_hits.add(pos)
             for ship in self.ships:
                 if pos in ship:
                     ship.remove(pos)
                     if not ship:
-                        print("Yay! You sank the ship! ...of player " + self.player_name)
+                        self.board.queue.print_queue.append("Yay! You sank the ship! ...of player " + self.player_name)
             if not self:
-                print("You destroyed an entire fleet! ...of player " + self.player_name)
+                self.board.queue.print_queue.append("You destroyed an entire fleet! ...of player " + self.player_name)
                 self.is_defeated()
             return True
         else:
@@ -261,13 +281,13 @@ class Ship(set):
             ) for i in range(length)
         }
         if length > 6:
-            print("Ships may not be longer than 6 fields.")
+            fleet.board.queue.print_queue.append("Ships may not be longer than 6 fields.")
             raise ValueError("Ships may not be longer than 6 fields.")
         if length < 3:
-            print("Ships must be at least 3 fields long.")
+            fleet.board.queue.print_queue.append("Ships must be at least 3 fields long.")
             raise ValueError("Ships must be longer than 3 fields long..")
         if positions & fleet != set():
-            print(
+            fleet.board.queue.print_queue.append(
                 "Couldn't add this ship because it intersects with other ships in",
                 " and ".join(list(str(i) for i in (positions & fleet)))
             )
@@ -276,7 +296,7 @@ class Ship(set):
                 " and ".join(list(str(i) for i in (positions & fleet)))
             )
         if positions & fleet.board != positions:
-            print(
+            fleet.board.queue.print_queue.append(
                 "couldn't add this ship because it's off the board in",
                 " and ".join(list(str(i) for i in (positions - fleet.board)))
             )
@@ -285,7 +305,7 @@ class Ship(set):
                 " and ".join(list(str(i) for i in (positions - fleet.board)))
             )
         if len(positions) + len(fleet) > len(fleet.board) * .25:
-            print("Your fleet may maximally cover 25% of the field.")
+            fleet.board.queue.print_queue.append("Your fleet may maximally cover 25% of the field.")
             raise ValueError("Your fleet may maximally cover 25% of the field.")
 
         self.update(positions)
