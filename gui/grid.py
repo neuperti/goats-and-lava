@@ -26,7 +26,6 @@ class Grid(tk.Frame):
         # Images
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
-        print(self.screen_height)
         image_filenames = os.listdir(absolute_path("/images"))
         for filename in image_filenames:
             image = tk.PhotoImage(file=absolute_path("/images/" + filename))
@@ -55,14 +54,20 @@ class Grid(tk.Frame):
         self.cell_function = function
 
     def draw(self, size,  standard_image: str, *set_image_doubles):
+        all_cell_coordinates = set()
+        standard_image = self.images[standard_image]
         # set_image_doubles are
-        """for x in range(1, size + 1):
-            for y in range(1, size + 1):"""
-        pass
+        for image_name, coordinates in set_image_doubles:
+            all_cell_coordinates |= coordinates
+            for coordinate in coordinates:
+                if self.cells[coordinate].image is not self.images[image_name]:
+                    self.cells[coordinate].update_image(self.images[image_name])
+        for cell_coordinate in set(self.cells.keys()) - all_cell_coordinates:
+            self.cells[cell_coordinate].update_image(standard_image)
 
     def update_cell(self, coordinates, image):
         """updates the state of one cell"""
-        self.cells[coordinates].image = image
+
 
     def test_function(self):
         """for testing only"""
@@ -75,4 +80,5 @@ if __name__ == "__main__":
     image = tk.PhotoImage(file=absolute_path("/images/goat.png"))
     test_grid = Grid(root, None)
     test_grid.pack()
+    test_grid.draw(10, "grass.png", ("goat.png", {(2, 4), (8, 2)}))
     root.mainloop()

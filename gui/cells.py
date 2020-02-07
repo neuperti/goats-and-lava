@@ -7,7 +7,13 @@ class Cell(tk.Button):
                            highlightthickness=0, command=callable_if_clicked)
         self.coordinates = coordinates
         self.click_funcion = callable_if_clicked
-            
+        self.image = None
+        self.update_image(image)
+
+    def update_image(self, image):
+        self.image = image
+        self.configure(image=image)
+
 #### to send to grid
 if __name__ == "__main__":
     def test_function():
