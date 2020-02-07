@@ -2,11 +2,10 @@ import tkinter as tk
 
 
 class Cell(tk.Button):
-    def __init__(self, master, image: tk.PhotoImage, coordinates, callable_if_clicked):
+    def __init__(self, master, image: tk.PhotoImage, coordinates):
         tk.Button.__init__(self, master, image=image, padx=0, pady=0, bd=0, relief=tk.FLAT,
-                           highlightthickness=0, command=callable_if_clicked)
+                           highlightthickness=0, command=lambda *args: master.cell_function(coordinates))
         self.coordinates = coordinates
-        self.click_funcion = callable_if_clicked
         self.image = None
         self.update_image(image)
 
