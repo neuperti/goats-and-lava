@@ -37,10 +37,11 @@ class Grid(tk.Frame):
         self.update_size(size)
         self.after(1000, self.check_print_queue)
 
-    def check_print_queue:
-        v = self.queue.get(wait_for_content=False)
-        if v:
-            self.draw(*v)
+    def check_print_queue(self):
+        draw_queue_content = self.queue.draw_que.get(wait_for_content=False)
+        if draw_queue_content:
+            self.draw(*draw_queue_content)
+        self.after(1000, self.check_print_queue)
 
     def update_size(self, size):
         """generates grid of cells"""
