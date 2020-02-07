@@ -33,6 +33,8 @@ class Board(main.Board):
         )
         while len(self.player_fleets) > 1:
             player_name = player_names[actual_player]
+            self.player_fleets[player_name].draw_offensive()
+            self.queue.append("df")
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
                     player_name, "is already on the bottom of the sea, thus skipped!"
@@ -65,6 +67,8 @@ class Board(main.Board):
                 pass
             elif order == "switched to":
                 active_player = arguments
+                self.player_fleets[active_player].draw_defensive()
+                self.queue.append("df")
             elif order == "deleted":
                 if active_player not in self.player_fleets:
                     active_player = None

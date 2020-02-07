@@ -34,10 +34,10 @@ class Grid(tk.Frame):
     def check_print_queue(self):
         draw_queue_content = self.queue.draw_queue.get(wait_for_content=False)
         if draw_queue_content:
-            if type(draw_queue_content) is tuple:
+            if type(draw_queue_content[0]) is tuple:
                 self.draw(*draw_queue_content[0])
             else:
-                self.update_size(int(draw_queue_content))
+                self.update_size(int(draw_queue_content[0]))
         self.after(1000, self.check_print_queue)
 
     def update_size(self, size):
