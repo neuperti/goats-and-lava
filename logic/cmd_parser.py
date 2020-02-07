@@ -9,6 +9,7 @@ __email__ = "philipp-seiffert@gmx.de"
 import sys
 import subprocess
 import logic.main as main
+from gui.show_defeat import die_from_timer
 
 
 COMMANDS = {
@@ -72,7 +73,10 @@ class Fleet(main.Fleet):
 def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     """Lets player enter a command and process it."""
     # Take input, which may be predefined:
-    command = board.queue.get().split()
+    command = board.queue.get(remaining_thinking_time=30).split()
+    if command[0] == "failed!":
+        board.queue.response_queue.append(False)
+        return "died from timer!", None
     return_value = None, None
     order, *arguments = command
     error = None
@@ -120,7 +124,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     if order == "bs" and len(board.player_fleets) > 0:
         error = "You can't change the boards size after you registered any players!"
     if order == "bb" and initialisation_mode:
-        error = "You can't just bomb around whilst setting up the board, that's a war crime!"
+        error = "You can't just bomb around whilst gardening, that's a war crime!"
 
     if not error:
         # doing commands that can always be done:

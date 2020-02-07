@@ -1,3 +1,5 @@
+import time
+
 
 class Queue(list):
     """A queue. queue.append(x) loads command x in the queue and returns the response to the
@@ -11,11 +13,19 @@ class Queue(list):
             self.response_queue = Queue(is_response_queue=True)
             self.print_queue = Queue(is_response_queue=True)
             self.draw_queue = Queue(is_response_queue=True)
+            self.time_queue = Queue(is_response_queue=True)
 
-    def get(self, wait_for_content=True):
+    def get(self, wait_for_content=True, remaining_thinking_time=None):
+        if remaining_thinking_time:
+            end_time = time.time() + remaining_thinking_time
         if wait_for_content:
             while not self:
-                pass
+                if remaining_thinking_time:
+                    if time.time() > end_time:
+                        self.time_queue.append(end_time - time.time())
+                        return "failed!"
+                    else:
+                        self.time_queue.append(end_time - time.time())
         else:
             if not self:
                 return None
@@ -25,7 +35,7 @@ class Queue(list):
         try:
             new_command = " ".join(new_command)
         except:
-            pass
+            new_command = new_command[0]
         list.append(self, new_command)
         if not self.is_response_queue:
             return self.response_queue.get()

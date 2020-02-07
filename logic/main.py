@@ -2,6 +2,7 @@
 
 import random
 from tkinter.messagebox import askyesno
+from gui.show_defeat import die_from_being_killed
 
 
 __author__ = "7157367, Seiffert"
@@ -189,6 +190,7 @@ class Fleet(set):
     def is_defeated(self):
         """Handles own defeat by deleting self from board."""
         del self.board.player_fleets[self.player_name]
+        die_from_being_killed(self.player_name)
 
     def add_ship(self, ship: set):
         """Adds a ship to the board, where the ship is a set of positions tuples."""

@@ -23,8 +23,7 @@ class SetupFinisher(tk.Frame):
             self,
             text="Finish setting up the neighborhood",
             command=lambda *args: (
-                master.master.finish_initialisation()
-                if queue.append("if") else None
+                master.master.finish_initialisation() if queue.append("if") else None
             )
         )
         setup_finisher.pack(side=tk.TOP, fill=tk.X)
@@ -64,12 +63,12 @@ class ViewSwitcher(tk.Frame):
         tk.Frame.__init__(self, master)
         draw_defensive_mode = tk.Button(
             self,
-            text="your defense",
+            text="defensive mode",
             command=lambda *args: queue.append("dd")
         )
         draw_offensive_mode = tk.Button(
             self,
-            text="your offense",
+            text="offensive mode",
             command=lambda *args: queue.append("do")
         )
         draw_defensive_mode.pack(side=tk.LEFT, fill=tk.X, expand=.5)
@@ -77,9 +76,10 @@ class ViewSwitcher(tk.Frame):
 
 
 class PlayerSidebar(tk.Frame):
-    def __init__(self, master, queue, grid):
+    def __init__(self, master, queue, grid, board):
         tk.Frame.__init__(self, master)
         self.queue = queue
+        self.board = board
         self.grid = grid
         self.player_switchers = dict()
 
@@ -92,6 +92,15 @@ class PlayerSidebar(tk.Frame):
             player_switcher.name_viewer.config(state=tk.DISABLED)
         except:
             pass
+
+    def update_player_switches(self):
+        """Removes players who have been deleted behind the scenes from the player sidebar."""
+        active_player = set(self.board.player_fleets.keys())
+        deleted_players = set(self.player_switchers.keys()) - active_player
+        for deleted_player in deleted_players:
+            self.player_switchers[deleted_player].pack_forget()
+            del self.player_switchers[deleted_player]
+            self.give_focus_to_player(PlayerSwitcher(self, ""))
 
     # verwaltet Liste von Spielernamen und Buttons
     # Bei klick von button: self.queue.append("ps " + button.text)
@@ -119,11 +128,12 @@ class PlayerManager(tk.Frame):
     # Ethält Eingabefeld und Plus-Button
     # Bei Klick auf Plus:
     #    add "p+ " + eingabewert in queue.
-    def __init__(self, master, queue, grid):
+    def __init__(self, master, queue, board,  grid):
         tk.Frame.__init__(self, master)
         self.grid = grid
         self.queue = queue
-        self.player_sidebar = PlayerSidebar(self, queue, grid)
+        self.board = board
+        self.player_sidebar = PlayerSidebar(self, queue, grid, board)
         self.player_sidebar.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.add_button = PlayerAdder(self, queue)
         self.add_button.pack(side=tk.TOP, fill=tk.X)
@@ -133,6 +143,8 @@ class PlayerManager(tk.Frame):
         self.view_switcher.pack(side=tk.TOP, fill=tk.X)
         self.setup_finisher = SetupFinisher(self, queue)
         self.setup_finisher.pack(side=tk.TOP, fill=tk.X)
+        self.countdown = tk.Label(text="remaining time: 30 secs")
+        self.countdown.pack(side=tk.TOP, fill=tk.X)
 
     def finish_initialisation(self):
         self.add_button.pack_forget()

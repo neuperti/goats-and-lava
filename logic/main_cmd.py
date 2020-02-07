@@ -3,6 +3,7 @@
 import random
 import logic.main as main
 import logic.cmd_parser as cmd_module
+from gui.show_defeat import die_from_timer
 cmd_parser = cmd_module.cmd_parser
 
 
@@ -38,7 +39,8 @@ class Board(main.Board):
             self.queue.append("df")
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
-                    player_name, "is already on the bottom of the sea, thus skipped!"
+                    player_name,
+                    "is already on the bottom of the sea, ehrm, world, and thus skipped!"
                 )
             else:
                 self.queue.print_queue.append(player_name + " will now do their turn!")
@@ -66,6 +68,9 @@ class Board(main.Board):
                 pass
             if not order:
                 pass
+            elif order == "died from timer!":
+                die_from_timer(active_player)
+                self.queue.append("p- " + str(active_player))
             elif order == "switched to":
                 active_player = arguments
                 if active_player:
@@ -105,6 +110,11 @@ class Board(main.Board):
                 pass
             if not order:
                 pass
+            elif order == "died from timer!":
+                die_from_timer(own_name)
+                self.player_fleets[own_name].clear()
+                del self.player_fleets[own_name]
+                break
             elif order is "shoot":
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
                 if successful_hit:

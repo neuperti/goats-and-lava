@@ -34,22 +34,29 @@ class Grid(tk.Frame):
     def check_print_queue(self):
         draw_queue_content = self.queue.draw_queue.get(wait_for_content=False)
         if draw_queue_content:
-            print(draw_queue_content)
-            if type(draw_queue_content[0]) is tuple:
+            if type(draw_queue_content) is tuple:
                 # draw field:
-                self.draw(*draw_queue_content[0])
+                self.draw(*draw_queue_content)
             else:
                 # change size:
-                self.update_size(int(draw_queue_content[0]))
+                self.update_size(int(draw_queue_content))
+        remaining_time = self.queue.time_queue.get(wait_for_content=False)
+        self.queue.time_queue.clear()
+        if remaining_time:
+            self.master.player_manager.countdown.configure(
+                text="remaining time:" + str(remaining_time).split(".")[0] + " secs"
+            )
+        self.master.player_manager.player_sidebar.update_player_switches()
         self.after(1000, self.check_print_queue)
 
     def update_size(self, size):
         """generates grid of cells"""
         image_filenames = os.listdir(absolute_path("/images"))
         for filename in image_filenames:
+            # adapts image depending on grid size and screen size
             image = tk.PhotoImage(file=absolute_path("/images/" + filename))
             image = image.zoom(int(self.screen_height * .9) // 100)
-            image = image.subsample(size * IMAGE_WIDTH // 100)  # adapts image depending on grid size and screen size
+            image = image.subsample(size * IMAGE_WIDTH // 100)
             self.images[filename] = image
         for cell in list(self.cells.keys()):  # remove old cells
             self.cells[cell].grid_remove()

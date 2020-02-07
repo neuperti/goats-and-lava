@@ -14,7 +14,7 @@ class MainWindow(tk.Tk):
         self.board = board
         self.queue = queue
         self.grid = Grid(self, queue)
-        self.player_manager = PlayerManager(self, queue, self.grid)
+        self.player_manager = PlayerManager(self, queue, board, self.grid)
         self.player_manager.pack(side=tk.LEFT, fill=tk.Y)
         self.grid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.console_manager = ConsoleManager(self, queue)
