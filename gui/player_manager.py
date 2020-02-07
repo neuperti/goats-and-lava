@@ -31,6 +31,17 @@ class PlayerAdder(tk.Frame):
         text_validator.pack(side=tk.LEFT)
 
 
+class SetupFinisher(tk.Frame):
+    def __init__(self, master, queue):
+        tk.Frame.__init__(self, master)
+        setup_finisher = tk.Button(
+            self,
+            text="Finish setting up the neighborhood",
+            command=lambda *args: master.hide_add_button() if queue.append("if") else None
+        )
+        setup_finisher.pack(side=tk.TOP, fill=tk.X)
+
+
 class PlayerSwitcher(tk.Frame):
     def __init__(self, master, player_name):
         tk.Frame.__init__(self, master)
@@ -42,6 +53,7 @@ class PlayerSwitcher(tk.Frame):
             player_name
         ))
         delete_button.pack(side=tk.LEFT)
+        self.delete_button = delete_button
         self.name_viewer = name_viewer
 
 
@@ -65,22 +77,21 @@ class PlayerSidebar(tk.Frame):
     # verwaltet Liste von Spielernamen und Buttons
     # Bei klick von button: self.queue.append("ps " + button.text)
     def add_player(self, player_name):
-        player_switcher = PlayerSwitcher(self, player_name)
-        player_switcher.pack(side=tk.TOP, fill=tk.X, expand=1)
-        self.player_switchers[player_name] = player_switcher
-        self.queue.append("p+ " + player_name)
-        self.give_focus_to_player(player_switcher)
+        if self.queue.append("p+ " + player_name):
+            player_switcher = PlayerSwitcher(self, player_name)
+            player_switcher.pack(side=tk.TOP, fill=tk.X)
+            self.player_switchers[player_name] = player_switcher
+            self.give_focus_to_player(player_switcher)
 
     def remove_player(self, player_name):
-        self.player_switchers[player_name].pack_remove()
-        del self.player_switchers[player_name]
-        self.queue.append("p- " + player_name)
-        self.give_focus_to_player(None)
+        if self.queue.append("p- " + player_name):
+            self.player_switchers[player_name].pack_forget()
+            del self.player_switchers[player_name]
+            self.give_focus_to_player(PlayerSwitcher(self, ""))
 
     def switch_player(self, player_name):
-        # highlighted selected player
-        self.give_focus_to_player(self.player_switchers[player_name])
-        self.queue.append("ps " + player_name)
+        if self.queue.append("ps " + player_name):
+            self.give_focus_to_player(self.player_switchers[player_name])
 
 
 class PlayerManager(tk.Frame):
@@ -99,8 +110,14 @@ class PlayerManager(tk.Frame):
         self.command_runner.pack(side=tk.TOP, fill=tk.X)
         self.add_button = PlayerAdder(self, queue)
         self.add_button.pack(side=tk.TOP, fill=tk.X)
+        self.setup_finisher = SetupFinisher(self, queue)
+        self.setup_finisher.pack(side=tk.TOP, fill=tk.X)
 
     def hide_add_button(self):
+        self.add_button.pack_forget()
+        self.setup_finisher.pack_forget()
+        for player_switcher in self.player_sidebar.player_switchers.values():
+            player_switcher.delete_button.pack_forget()
         # entfert add button
         # fügt stattdessen eine checkbox hinzu, die angibt, ob man im offensiven Modus ist
         # Hacken setzen:

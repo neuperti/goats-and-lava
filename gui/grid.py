@@ -55,9 +55,11 @@ class Grid(tk.Frame):
     def test_function(self):
         print("YAY!")
 
-# for testing
-root = tk.Tk()
-image = tk.PhotoImage(file=absolute_path("/images/goat.png"))
-test_grid = Grid(root, None, 10)
-test_grid.pack()
-root.mainloop()
+
+if __name__ == "__main__":
+    # for testing
+    root = tk.Tk()
+    image = tk.PhotoImage(file=absolute_path("/images/goat.png"))
+    test_grid = Grid(root, None, 10)
+    test_grid.pack()
+    root.mainloop()

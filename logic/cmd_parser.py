@@ -72,11 +72,8 @@ class Fleet(main.Fleet):
 def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     """Lets player enter a command and process it."""
     # Take input, which may be predefined:
-    command = str()
-    while not command:
-        if board.queue:
-            command = board.queue.get()
-    command = command.split()
+    command = board.queue.get().split()
+    return_value = None, None
     order, *arguments = command
     error = None
     # Quit or restart the game:
@@ -130,26 +127,26 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         if order == "?i":
             with open("logic/intro.txt", "r") as intro:
                 print(intro.read())
-                return None, None
+                return_value = None, None
         if order == "?c":
             with open("logic/commands.txt", "r") as commands:
                 print(commands.read())
-                return None, None
+                return_value = None, None
         if order == "df":
             print("\n" * 100)
-            return None, None
+            return_value = None, None
         if order == "dd":
             board.player_fleets[player_whose_turn_it_is].draw_defensive()
-            return None, None
+            return_value = None, None
         if order == "do":
             board.player_fleets[player_whose_turn_it_is].draw_offensive()
-            return None, None
+            return_value = None, None
         if order == "bs":
             try:
                 new_size = int(arguments[0])
                 print("Set board size to", new_size)
                 board.change_size(new_size)
-                return None, None
+                return_value = None, None
             except:
                 error = "The new size of the board must be an int!"
         if order in {"p+", "p-", "ps"}:
@@ -159,25 +156,25 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
             elif order == "p+":
                 board.player_fleets[player_name] = Fleet(board, player_name)
                 print("Created & switched to", player_name + ".")
-                return "switched to", player_name
+                return_value = "switched to", player_name
             elif order == "p-" and player_name not in board.player_fleets:
                 error = "Player " + player_name + " does not exist and thus can't be deleted!"
             elif order == "p-":
                 del board.player_fleets[player_name]
                 print("Deleted player", player_name + ".")
-                return "deleted", player_name
+                return_value = "deleted", player_name
             elif order == "ps" and player_name not in board.player_fleets:
                 error = "Player " + player_name + " does not exist."
             elif order == "ps":
                 print("Switched to", player_name + ".")
-                return "switched to", player_name
+                return_value = "switched to", player_name
         if order == "if":
             print("Finished setting up the board!")
-            return "finished setup", True
+            return_value = "finished setup", True
         if order == "bb":
             try:
                 position = tuple(int(i) for i in arguments)
-                return "shoot", position
+                return_value = "shoot", position
             except ValueError:
                 error = (
                     "Position argument for bombing must be two ints, one for the row and one\n"
@@ -208,10 +205,13 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                         "o": [0, 1],
                         "w": [0, -1]
                     }[direction]
-                    return "make ship", (position, length, direction)
+                    return_value = "make ship", (position, length, direction)
             finally:
                 pass
     if error:
         print(error)
+        board.queue.response_queue.append(False)
         raise RuntimeError("Something happened: " + str(error))
-    return None, None
+    else:
+        board.queue.response_queue.append(True)
+    return return_value
