@@ -243,8 +243,8 @@ class Fleet(set):
             lines.append(new_line)
         lines.append("+" + "-" * self.board.size + "+")
         print("\n".join(lines))"""
-        self.board.print_queue.draw_queue.append((
-            "blue.png",
+        self.board.queue.draw_queue.append((
+            "blank.png",
             ("stone_lava.png", self.positions_hit),
             ("stone_grass.png", self.positions_missed)
         ))

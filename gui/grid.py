@@ -38,9 +38,11 @@ class Grid(tk.Frame):
         self.after(1000, self.check_print_queue)
 
     def check_print_queue(self):
-        draw_queue_content = self.queue.draw_que.get(wait_for_content=False)
+        draw_queue_content = self.queue.draw_queue.get(wait_for_content=False)
+        print("checked!")
         if draw_queue_content:
-            self.draw(*draw_queue_content)
+            print("checked successfully!")
+            self.draw(*draw_queue_content[0])
         self.after(1000, self.check_print_queue)
 
     def update_size(self, size):
@@ -67,6 +69,7 @@ class Grid(tk.Frame):
 
     def draw(self, standard_image: str, *set_image_doubles):
         """updates the images of cells which changed"""
+        print("wuwu", self, standard_image, set_image_doubles)
         all_cell_coordinates = set()
         standard_image = self.images[standard_image]
         # set_image_doubles are
