@@ -22,7 +22,10 @@ class SetupFinisher(tk.Frame):
         setup_finisher = tk.Button(
             self,
             text="Finish setting up the neighborhood",
-            command=lambda *args: master.hide_add_button() if queue.append("if") else None
+            command=lambda *args: (
+                master.master.finish_initialisation()
+                if queue.append("if") else None
+            )
         )
         setup_finisher.pack(side=tk.TOP, fill=tk.X)
 
@@ -52,6 +55,25 @@ class PlayerSwitcher(tk.Frame):
         delete_button.pack(side=tk.LEFT)
         self.delete_button = delete_button
         self.name_viewer = name_viewer
+
+
+class ViewSwitcher(tk.Frame):
+    def __init__(self, master, queue):
+        self.view_mode = tk.StringVar()
+        self.queue = queue
+        tk.Frame.__init__(self, master)
+        draw_defensive_mode = tk.Button(
+            self,
+            text="your defense",
+            command=lambda *args: queue.append("dd")
+        )
+        draw_offensive_mode = tk.Button(
+            self,
+            text="your offense",
+            command=lambda *args: queue.append("do")
+        )
+        draw_defensive_mode.pack(side=tk.LEFT, fill=tk.X, expand=.5)
+        draw_offensive_mode.pack(side=tk.LEFT, fill=tk.X, expand=.5)
 
 
 class PlayerSidebar(tk.Frame):
@@ -107,10 +129,12 @@ class PlayerManager(tk.Frame):
         self.add_button.pack(side=tk.TOP, fill=tk.X)
         self.size_changer = SizeChanger(self, queue)
         self.size_changer.pack(side=tk.TOP, fill=tk.X)
+        self.view_switcher = ViewSwitcher(self, queue)
+        self.view_switcher.pack(side=tk.TOP, fill=tk.X)
         self.setup_finisher = SetupFinisher(self, queue)
         self.setup_finisher.pack(side=tk.TOP, fill=tk.X)
 
-    def hide_add_button(self):
+    def finish_initialisation(self):
         self.add_button.pack_forget()
         self.setup_finisher.pack_forget()
         self.size_changer.pack_forget()

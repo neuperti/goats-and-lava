@@ -30,7 +30,7 @@ class ConsoleManager(tk.Frame):
         new_printable = self.queue.print_queue.get(wait_for_content=False)
         if new_printable:
             self.console_field.configure(state=tk.NORMAL)
-            self.console_field.insert(tk.END, new_printable)
+            self.console_field.insert(tk.END, "\n" + new_printable)
             self.console_field.see(tk.END)
             self.console_field.configure(state=tk.DISABLED)
         self.after(1000, lambda: self.load_from_queue())
