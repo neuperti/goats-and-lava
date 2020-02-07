@@ -84,6 +84,7 @@ class Grid(tk.Frame):
                 self.cells[coordinate].update_image(self.get_image(standard_image))
 
     def get_image(self, image_class):
+        image = self.images["blank.png"]
         grass = [
             self.images["grass1.png"],
             self.images["grass2.png"],
@@ -114,6 +115,7 @@ class Grid(tk.Frame):
             image = choice(stone_on_lava)
         elif image_class == "stone_grass":
             image = choice(stone_on_grass)
+        return image
 
 
 if __name__ == "__main__":
