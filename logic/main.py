@@ -60,6 +60,8 @@ class Board(set):
         successes = 0
         for player_name in list(self.player_fleets.keys()):
             if player_name != own_name:
+                if pos in self.player_fleets[own_name].positions_missed:
+                    
                 fleet = self.player_fleets[player_name]
                 hit = fleet.shoot_at_given_position(pos)
                 if hit:

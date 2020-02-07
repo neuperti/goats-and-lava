@@ -9,13 +9,19 @@ class Queue(list):
         self.is_response_queue = is_response_queue
         if not is_response_queue:
             self.response_queue = Queue(is_response_queue=True)
+            self.print_queue = Queue(is_response_queue=True)
 
-    def get(self):
-        while not self:
-            pass
+    def get(self, wait_for_content=True):
+        if wait_for_content:
+            while not self:
+                pass
+        else:
+            if not self:
+                return None
         return self.pop(0)
 
-    def append(self, new_command):
+    def append(self, *new_command):
+        new_command = " ".join(new_command)
         list.append(self, new_command)
         if not self.is_response_queue:
             return self.response_queue.get()

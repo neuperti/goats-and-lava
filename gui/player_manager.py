@@ -1,21 +1,6 @@
 import tkinter as tk
 
 
-class CommandRunner(tk.Frame):
-    def __init__(self, master, queue):
-        tk.Frame.__init__(self, master)
-        text_field = tk.Entry(self)
-        text_field.pack(side=tk.LEFT, fill=tk.X, expand=1)
-        text_validator = tk.Button(
-            self,
-            text="Run Command (e.g. ?c)",
-            command=lambda *args: (
-                queue.append(text_field.get()) or text_field.delete(0, tk.END)
-            )
-        )
-        text_validator.pack(side=tk.LEFT)
-
-
 class PlayerAdder(tk.Frame):
     def __init__(self, master, queue):
         tk.Frame.__init__(self, master)
@@ -106,8 +91,6 @@ class PlayerManager(tk.Frame):
         self.queue = queue
         self.player_sidebar = PlayerSidebar(self, queue, grid)
         self.player_sidebar.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        self.command_runner = CommandRunner(self, queue)
-        self.command_runner.pack(side=tk.TOP, fill=tk.X)
         self.add_button = PlayerAdder(self, queue)
         self.add_button.pack(side=tk.TOP, fill=tk.X)
         self.setup_finisher = SetupFinisher(self, queue)

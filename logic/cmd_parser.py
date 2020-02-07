@@ -126,14 +126,14 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         # doing commands that can always be done:
         if order == "?i":
             with open("logic/intro.txt", "r") as intro:
-                print(intro.read())
+                board.queue.print_queue.append(intro.read())
                 return_value = None, None
         if order == "?c":
             with open("logic/commands.txt", "r") as commands:
-                print(commands.read())
+                board.queue.print_queue.append(commands.read())
                 return_value = None, None
         if order == "df":
-            print("\n" * 100)
+            board.queue.print_queue.append("\n" * 100)
             return_value = None, None
         if order == "dd":
             board.player_fleets[player_whose_turn_it_is].draw_defensive()
@@ -144,7 +144,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         if order == "bs":
             try:
                 new_size = int(arguments[0])
-                print("Set board size to", new_size)
+                board.queue.print_queue.append("Set board size to", new_size)
                 board.change_size(new_size)
                 return_value = None, None
             except:
@@ -155,21 +155,21 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                 error = "There already is a player of this name!"
             elif order == "p+":
                 board.player_fleets[player_name] = Fleet(board, player_name)
-                print("Created & switched to", player_name + ".")
+                board.queue.print_queue.append("Created & switched to", player_name + ".")
                 return_value = "switched to", player_name
             elif order == "p-" and player_name not in board.player_fleets:
                 error = "Player " + player_name + " does not exist and thus can't be deleted!"
             elif order == "p-":
                 del board.player_fleets[player_name]
-                print("Deleted player", player_name + ".")
+                board.queue.print_queue.append("Deleted player", player_name + ".")
                 return_value = "deleted", player_name
             elif order == "ps" and player_name not in board.player_fleets:
                 error = "Player " + player_name + " does not exist."
             elif order == "ps":
-                print("Switched to", player_name + ".")
+                board.queue.print_queue.append("Switched to", player_name + ".")
                 return_value = "switched to", player_name
         if order == "if":
-            print("Finished setting up the board!")
+            board.queue.print_queue.append("Finished setting up the board!")
             return_value = "finished setup", True
         if order == "bb":
             try:
@@ -209,7 +209,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
             finally:
                 pass
     if error:
-        print(error)
+        board.queue.print_queue.append(error)
         board.queue.response_queue.append(False)
         raise RuntimeError("Something happened: " + str(error))
     else:

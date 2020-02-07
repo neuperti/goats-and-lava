@@ -28,20 +28,28 @@ class Board(main.Board):
         """The main loop, in which all actions are performed."""
         player_names = list(self.player_fleets.keys())
         actual_player = random.randint(0, len(player_names) - 1)
-        print("The lucky first player is... " + player_names[actual_player] + "!")
+        self.queue.print_queue.append(
+            "The lucky first player is... " + player_names[actual_player] + "!"
+        )
         while len(self.player_fleets) > 1:
             player_name = player_names[actual_player]
             if player_name not in self.player_fleets:
-                print(player_name, "is already on the bottom of the sea, thus skipped!")
+                self.queue.print_queue.append(
+                    player_name, "is already on the bottom of the sea, thus skipped!"
+                )
             else:
-                print(player_name + " will now do their turn!")
+                self.queue.print_queue.append(player_name + " will now do their turn!")
             self.bombard_fleet(player_name)
             actual_player = (actual_player + 1) % len(player_names)
-        print(list(self.player_fleets.keys())[0], "won by staying alive for the longest!")
+        self.queue.print_queue.append(
+            list(self.player_fleets.keys())[0], "won by staying alive for the longest!"
+        )
 
     def initialize_fleets(self):
         """Lets users create new fleets:"""
-        print("You are now within the process of setting up all fleets for the battle.")
+        self.queue.print_queue.append(
+            "You are now within the process of setting up all fleets for the battle."
+        )
         active_player = None
         while True:
             order = None
@@ -92,11 +100,12 @@ class Board(main.Board):
             if order is None:
                 pass
             elif order is "shoot":
+                if target_position in self.player_fleets[own_name].positions_missed:
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
                 if successful_hit:
-                    print("Successfully hit " + str(successful_hit) + " targets!")
+                    self.queue.print_queue.append("Successfully hit " + str(successful_hit) + " targets!")
                 else:
-                    print("Awww naaah, you missed...")
+                    self.queue.print_queue.append("Awww naaah, you missed...")
                     break
             else:
                 raise Exception("This shouldn't happen:", order, arguments)

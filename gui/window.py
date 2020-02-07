@@ -3,6 +3,7 @@ import tkinter as tk
 from gui.grid import Grid
 from gui.player_manager import PlayerManager
 from gui.grid import absolute_path
+from gui.console_manager import ConsoleManager
 
 
 class MainWindow(tk.Tk):
@@ -16,3 +17,5 @@ class MainWindow(tk.Tk):
         self.player_manager = PlayerManager(self, queue, self.grid)
         self.player_manager.pack(side=tk.LEFT, fill=tk.Y)
         self.grid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.console_manager = ConsoleManager(self, queue)
+        self.console_manager.pack(side=tk.LEFT, fill=tk.Y)
