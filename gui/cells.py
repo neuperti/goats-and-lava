@@ -25,7 +25,7 @@ if __name__ == "__main__":
     image_path = base_folder + "/images/goat.png"
     root = tk.Tk()
     image = tk.PhotoImage(file=image_path)
-    new_cell = Cell(root, image, (1, 2), test_function)
+    new_cell = Cell(root, image, (1, 2))
     new_cell.pack()
     root.mainloop()
     
