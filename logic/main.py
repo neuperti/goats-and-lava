@@ -217,9 +217,9 @@ class Fleet(set):
         lines.append("+" + "-" * self.board.size + "+")
         print("\n".join(lines))"""
         self.board.queue.draw_queue.append((
-            "grass.png",
-            ("lava.png", self),
-            ("stone_lava.png", self.taken_hits),
+            "grass",
+            ("lava", self),
+            ("stone_lava", self.taken_hits),
         ))
 
     def draw_offensive(self):
@@ -244,9 +244,9 @@ class Fleet(set):
         lines.append("+" + "-" * self.board.size + "+")
         print("\n".join(lines))"""
         self.board.queue.draw_queue.append((
-            "blank.png",
-            ("stone_lava.png", self.positions_hit),
-            ("stone_grass.png", self.positions_missed)
+            "blank",
+            ("stone_lava", self.positions_hit),
+            ("stone_grass", self.positions_missed)
         ))
 
     def shoot_at_given_position(self, pos):

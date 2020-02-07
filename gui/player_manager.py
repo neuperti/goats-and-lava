@@ -27,6 +27,18 @@ class SetupFinisher(tk.Frame):
         setup_finisher.pack(side=tk.TOP, fill=tk.X)
 
 
+class SizeChanger(tk.Frame):
+    def __init__(self, master, queue):
+        tk.Frame.__init__(self, master)
+        confirm_size = tk.Button(self, text="Change size:")
+        confirm_size.pack(side=tk.LEFT)
+        size_input_field = tk.Entry(self)
+        size_input_field.pack(side=tk.LEFT, fill=tk.X, expand=1)
+        confirm_size.configure(
+            command=lambda *args: queue.append("bs " + size_input_field.get())
+        )
+
+
 class PlayerSwitcher(tk.Frame):
     def __init__(self, master, player_name):
         tk.Frame.__init__(self, master)
