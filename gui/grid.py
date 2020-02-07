@@ -22,7 +22,6 @@ class Grid(tk.Frame):
     def __init__(self, master, queue, size=10):
         """initializes the class"""
         tk.Frame.__init__(self, master)
-        self.cell_function = None
         self.cells = dict()
         self.size = size
         self.queue = queue
@@ -61,12 +60,8 @@ class Grid(tk.Frame):
                 elif x == 0 and y == 0:
                     self.cells[(x, y)] = tk.Label(self, text=str())
                 else:
-                    self.cells[(x, y)] = Cell(self, self.images[DEFAULT_IMAGE], (x, y), self.cell_function)
+                    self.cells[(x, y)] = Cell(self, self.images[DEFAULT_IMAGE], (x, y))
                 self.cells[(x, y)].grid(row=x, column=y)
-
-    def change_function_of_cells(self, function):
-        """changes the cell function when pressed"""
-        self.cell_function = function
 
     def draw(self, standard_image: str, *set_image_doubles):
         """updates the images of cells which changed"""
