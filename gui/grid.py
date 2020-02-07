@@ -31,7 +31,7 @@ class Grid(tk.Frame):
         for filename in image_filenames:
             image = tk.PhotoImage(file=absolute_path("/images/" + filename))
             image = image.zoom(int(self.screen_height * .9) // 100)
-            image = image.subsample(size//100*IMAGE_WIDH)  # adapts image depending on grid size and screen size
+            image = image.subsample(size*IMAGE_WIDH//100)  # adapts image depending on grid size and screen size
             self.images[filename] = image
         print(self.images)
         self.update_size(size)
@@ -40,7 +40,7 @@ class Grid(tk.Frame):
         """generates grid of cells"""
         for cell in list(self.cells.keys()):  # remove old cells
             self.cells[cell].grid_remove()
-            del self.cells[cell]    
+            del self.cells[cell]
         self.size = size
         for x in range(1, size + 1):
             for y in range(1, size + 1):
