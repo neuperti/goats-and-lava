@@ -9,6 +9,12 @@ IMAGE_WIDTH = 1000
 DEFAULT_IMAGE = "blank.png"
 
 
+def image_in_good_size(image, pixel_height, screen_height, images_to_fit_in=1):
+    image = image.zoom(int(screen_height * .9) // 100)
+    image = image.subsample(images_to_fit_in * pixel_height // 100)
+    return image
+
+
 def absolute_path(relative_path):
     """turns a relative path (with leading '/') into an absolute one"""
     base_folder = os.path.dirname(__file__)
@@ -56,8 +62,7 @@ class Grid(tk.Frame):
         for filename in image_filenames:
             # adapts image depending on grid size and screen size
             image = tk.PhotoImage(file=absolute_path("/images/" + filename))
-            image = image.zoom(int(self.screen_height * .9) // 100)
-            image = image.subsample(size * IMAGE_WIDTH // 100)
+            image = image_in_good_size(image, IMAGE_WIDTH, self.screen_height, size)
             self.images[filename] = image
         for cell in list(self.cells.keys()):  # remove old cells
             self.cells[cell].grid_remove()

@@ -128,7 +128,7 @@ class PlayerManager(tk.Frame):
     # Ethält Eingabefeld und Plus-Button
     # Bei Klick auf Plus:
     #    add "p+ " + eingabewert in queue.
-    def __init__(self, master, queue, board,  grid):
+    def __init__(self, master, queue, board, grid):
         tk.Frame.__init__(self, master)
         self.grid = grid
         self.queue = queue

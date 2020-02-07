@@ -13,7 +13,6 @@ QUEUE = Queue()
 def start_window():
     board = Board(QUEUE)
     board.intro = ""
-    threading.Thread(target=lambda *args: start_game(QUEUE, board)).start()
     main_window = MainWindow(board, QUEUE)
     main_window.mainloop()
 
