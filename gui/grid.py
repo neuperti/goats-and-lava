@@ -104,8 +104,9 @@ class Grid(tk.Frame):
         lava_end_left = [self.images["lava.png"]]
         stone_on_grass = [self.images["stone_grass.png"]]
         stone_on_lava = [self.images["stone_lava.png"]]
+        stone_on_goat = [self.images["stone_goat.png"]]
         if image_class == "grass":
-            if randint(0,10) == 1:
+            if randint(0, 20) == 1:
                 image = choice(goat)
             else:
                 image = choice(grass)
