@@ -146,6 +146,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                 new_size = int(arguments[0])
                 board.queue.print_queue.append("Set board size to", new_size)
                 board.change_size(new_size)
+                board.queue.draw_queue.append(int(arguments[0]))
                 return_value = None, None
             except:
                 error = "The new size of the board must be an int!"

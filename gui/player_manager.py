@@ -105,12 +105,15 @@ class PlayerManager(tk.Frame):
         self.player_sidebar.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.add_button = PlayerAdder(self, queue)
         self.add_button.pack(side=tk.TOP, fill=tk.X)
+        self.size_changer = SizeChanger(self, queue)
+        self.size_changer.pack(side=tk.TOP, fill=tk.X)
         self.setup_finisher = SetupFinisher(self, queue)
         self.setup_finisher.pack(side=tk.TOP, fill=tk.X)
 
     def hide_add_button(self):
         self.add_button.pack_forget()
         self.setup_finisher.pack_forget()
+        self.size_changer.pack_forget()
         for player_switcher in self.player_sidebar.player_switchers.values():
             player_switcher.delete_button.pack_forget()
         # entfert add button

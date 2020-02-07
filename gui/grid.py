@@ -34,10 +34,11 @@ class Grid(tk.Frame):
 
     def check_print_queue(self):
         draw_queue_content = self.queue.draw_queue.get(wait_for_content=False)
-        print("checked!")
         if draw_queue_content:
-            print("checked successfully!")
-            self.draw(*draw_queue_content[0])
+            if type(draw_queue_content) is tuple:
+                self.draw(*draw_queue_content[0])
+            else:
+                self.update_size(int(draw_queue_content))
         self.after(1000, self.check_print_queue)
 
     def update_size(self, size):
@@ -70,7 +71,6 @@ class Grid(tk.Frame):
 
     def draw(self, standard_image: str, *set_image_doubles):
         """updates the images of cells which changed"""
-        print("wuwu", self, standard_image, set_image_doubles)
         all_cell_coordinates = set()
         # set_image_doubles are
         for image_name, coordinates in set_image_doubles:
