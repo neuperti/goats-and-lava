@@ -34,3 +34,4 @@ class ConsoleManager(tk.Frame):
             self.console_field.see(tk.END)
             self.console_field.configure(state=tk.DISABLED)
         self.after(1000, lambda: self.load_from_queue())
+        print("called!")
