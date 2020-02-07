@@ -43,16 +43,24 @@ class Grid(tk.Frame):
                 self.cells[(x, y)].grid(row=x-1, column=y-1)
 
     def change_function_of_cells(self, function):
+        """changes the cell function when pressed"""
         # ändert die an jede Zelle angebundene Funktion zu function
         # platzieren (init), nichts (defensiver modus), "bb " + "".join(coordinate)
         # in queue reihen (offensiver modus)
-        self.cell_function = None #To Do 
+        self.cell_function = function
 
-    def draw(self, standard_image: str, *set_image_doubles):
+    def draw(self, size,  standard_image: str, *set_image_doubles):
         # set_image_doubles are
+        """for x in range(1, size + 1):
+            for y in range(1, size + 1):"""
         pass
 
+    def update_cell(self, coordinates, image):
+        """updates the state of one cell"""
+        self.cells[coordinates].image = image
+
     def test_function(self):
+        """only for testing"""
         print("YAY!")
 
 
@@ -63,3 +71,4 @@ if __name__ == "__main__":
     test_grid = Grid(root, None, 10)
     test_grid.pack()
     root.mainloop()
+    
