@@ -20,6 +20,7 @@ class MainWindow(tk.Tk):
         """Initializes the class"""
         tk.Tk.__init__(self)
         self.board = board
+        board.window = self
         self.queue = queue
         self.player_manager = None
         self.console_manager = None

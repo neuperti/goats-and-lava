@@ -222,13 +222,15 @@ class Fleet(set):
             self.board.queue.print_queue.append("you hit a boat! ...of player " + self.player_name)
             self.remove(pos)
             self.taken_hits.add(pos)
-            for ship in self.ships:
+            for ship in list(self.ships):
                 if pos in ship:
                     ship.remove(pos)
                     if not ship:
-                        self.board.queue.print_queue.append("Yay! You sank the ship! ...of player " + self.player_name)
+                        self.board.queue.print_queue.append("Yay! You sank the ship! ...of player "
+                                                            + self.player_name)
             if not self:
-                self.board.queue.print_queue.append("You destroyed an entire fleet! ...of player " + self.player_name)
+                self.board.queue.print_queue.append("You destroyed an entire fleet! ...of player "
+                                                    + self.player_name)
                 self.is_defeated()
             return True
         else:

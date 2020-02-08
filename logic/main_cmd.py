@@ -1,5 +1,6 @@
 """A german game called 'Schiffe Versenken', but this command line based."""
 
+
 import random
 import time
 
@@ -18,7 +19,10 @@ class Board(main.Board):
     def __init__(self, queue, *args):
         """Initializes the class"""
         main.Board.__init__(self, *args)
+        self.window = None
         self.queue = queue
+        self.rock_scattering = False
+        self.one_shoot_per_ship = False
 
     def change_size(self, new_size):
         """Changes the size of the board."""
@@ -37,10 +41,15 @@ class Board(main.Board):
         )
         while len(self.player_fleets) > 1:
             player_name = player_names[actual_player]
+            self.window.player_manager.player_sidebar.give_focus_to_player(
+                self.window.player_manager.player_sidebar.player_switchers[player_name]
+            )
             if player_name:
                 self.player_fleets[player_name].draw_offensive()
+            # time.sleep(5)
+            # self.queue.append("df")
             time.sleep(5)
-            self.queue.append("df")
+            self.queue.print_queue.append("\n" * 100)
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
                     player_name,
@@ -89,6 +98,7 @@ class Board(main.Board):
                 try:
                     fleet = self.player_fleets[active_player]
                     fleet.add_ship(Ship(fleet, *arguments))
+                    self.queue.append("df")
                 except:
                     # We'll try an other time ;)
                     continue
@@ -112,6 +122,45 @@ class Board(main.Board):
 
             except RuntimeError:
                 pass
+        shots_fired = 0
+        if self.one_shoot_per_ship:
+            shots_to_fire = len([
+                ship for ship in self.player_fleets[own_name].ships if ship
+            ]) - 1
+            self.queue.print_queue.append(
+                "You have", str(shots_to_fire),
+                "lava rims left, and thus may fire",
+                str(shots_to_fire), "times."
+            )
+        else:
+            shots_to_fire = None
+        while True:
+            # Try to get a valid order and try again if you don't
+            order = None
+            if (not shots_fired) or (not self.rock_scattering):
+                # we ask for manuel shooting for the first shot and if we are not scattering
+                # the rocks:
+                try:
+                    order, arguments = cmd_parser(
+                        self,
+                        initialisation_mode=False,
+                        player_whose_turn_it_is=own_name
+                    )
+                except RuntimeError:
+                    pass
+            else:
+                # We scatter the rocks:
+                time.sleep(1)
+                last_shooting_position = arguments
+                possible_new_shooting_positions = {
+                    (
+                        last_shooting_position[0] + x,
+                        last_shooting_position[1] + y
+                    ) for x in range(-1, 2) for y in range(3)
+                } & self
+                possible_new_shooting_positions = list(possible_new_shooting_positions)
+                order = "shoot"
+                arguments = random.choice(possible_new_shooting_positions)
             if not order:
                 pass
             elif order == "died from timer!":
@@ -120,14 +169,23 @@ class Board(main.Board):
                 del self.player_fleets[own_name]
                 break
             elif order is "shoot":
+                print("this should happen:", order, arguments)
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
                 if successful_hit:
                     self.queue.print_queue.append("Successfully hit " + str(successful_hit)
                                                   + " targets!")
                     self.player_fleets[own_name].draw_offensive()
+                    shots_fired += 1
+                    if shots_to_fire == 0:
+                        break
                 else:
                     self.queue.print_queue.append("Awww naaah, you missed...")
-                    break
+                    if type(shots_to_fire) is int:
+                        self.player_fleets[own_name].draw_offensive()
+                    if not shots_to_fire:
+                        break
+                if type(shots_to_fire) is int:
+                    shots_to_fire -= 1
             else:
                 raise Exception("This shouldn't happen:", order, arguments)
 
