@@ -9,7 +9,7 @@ __email__ = "philipp-seiffert@gmx.de"
 import sys
 import subprocess
 import logic.main as main
-from gui.show_defeat import die_from_timer
+from gui.show_defeat import die_from_being_a_coward
 
 
 COMMANDS = {
@@ -82,6 +82,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     error = None
     # Quit or restart the game:
     if order == "gq":
+        die_from_being_a_coward("somone")
         sys.exit()
     if order == "gr":
         subprocess.Popen(

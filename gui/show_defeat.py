@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+import sys
+
 from gui.grid import absolute_path
 
 
@@ -27,3 +29,15 @@ def die_from_being_killed(player_name):
         str(player_name) + " died from being stoned. Such a stoner!",
         "icon/stoner.png"
     )
+
+
+def die_from_being_a_coward(player_name):
+    screen = DeathScreen(
+        str(player_name) + " is a coward worth spitting at!",
+        (
+            str(player_name) + " is a looser because they couldn't stand the preasure and thus\
+stopped!\nEveryone but this monster thus is a winner and allowed to celebrate!"
+        ),
+        "icon/coward.png"
+    )
+    screen.after(10_000, lambda *args: sys.exit())

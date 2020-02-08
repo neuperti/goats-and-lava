@@ -16,6 +16,21 @@ class PlayerAdder(tk.Frame):
         text_validator.pack(side=tk.LEFT)
 
 
+class StoppingManager(tk.Frame):
+    def __init__(self, master, queue):
+        tk.Frame.__init__(self, master)
+        tk.Button(
+            self,
+            text="Exit",
+            command=lambda *args: queue.append("gq")
+        ).pack(side=tk.LEFT, fill=tk.X, expand=.5)
+        tk.Button(
+            self,
+            text="Restart",
+            command=lambda *args: queue.append("gr")
+        ).pack(side=tk.LEFT, fill=tk.X, expand=.5)
+
+
 class SetupFinisher(tk.Frame):
     def __init__(self, master, queue):
         tk.Frame.__init__(self, master)
@@ -143,6 +158,8 @@ class PlayerManager(tk.Frame):
         self.view_switcher.pack(side=tk.TOP, fill=tk.X)
         self.setup_finisher = SetupFinisher(self, queue)
         self.setup_finisher.pack(side=tk.TOP, fill=tk.X)
+        self.stop_manager = StoppingManager(self, queue)
+        self.stop_manager.pack(side=tk.TOP, fill=tk.X)
         self.countdown = tk.Label(text="remaining time: 30 secs")
         self.countdown.pack(side=tk.TOP, fill=tk.X)
 
