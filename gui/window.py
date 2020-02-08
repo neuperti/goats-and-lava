@@ -15,7 +15,9 @@ __email__ = "s8978466@stud.uni-frankfurt.de"
 
 
 class MainWindow(tk.Tk):
+    """A class for the main Window"""
     def __init__(self, board, queue):
+        """Initializes the class"""
         tk.Tk.__init__(self)
         self.board = board
         self.queue = queue
@@ -31,6 +33,7 @@ class MainWindow(tk.Tk):
         self.skip_intro_button.pack(fill=tk.X)
 
     def after_intro(self, board, queue):
+        """The part of __init__ which launches after the intro is displayed"""
         self.grid = Grid(self, queue)
         self.grid.cell_function = lambda coordinates: crack_lava_rim(coordinates, self.queue)
         self.player_manager = PlayerManager(self, queue, board, self.grid)
@@ -43,6 +46,7 @@ class MainWindow(tk.Tk):
         threading.Thread(target=lambda *args: start_game(queue, board)).start()
 
     def finish_initialisation(self):
+        """Handles the finishing of the initialization process"""
         self.player_manager.finish_initialisation()
         self.grid.cell_function = lambda coordinates: (
             self.queue.append("bb " + str(coordinates[0]) + " " + str(coordinates[1]))
@@ -50,6 +54,7 @@ class MainWindow(tk.Tk):
 
 
 class IntroButton(tk.Button):
+    """A class for the button which displayes the intro images"""
     def __init__(self, master, after_intro):
         self.counter = 1
         self.after_intro = after_intro
@@ -69,6 +74,7 @@ class IntroButton(tk.Button):
                            relief=tk.FLAT, highlightthickness=0, command=self.button_pressed)
 
     def button_pressed(self):
+        """Handles the transition of images of the button"""
         if self.counter < 7:
             self.configure(image=self.intro_images[self.counter])
             self.counter += 1
@@ -78,17 +84,19 @@ class IntroButton(tk.Button):
 
 
 class SkipIntroButton(tk.Button):
+    """Lets the user skip the intro"""
     def __init__(self, master, after_intro):
         self.after_intro = after_intro
         tk.Button.__init__(self, master, text="I am impatient and want to skip the intro. :(",
                            command=self.button_pressed)
 
     def button_pressed(self):
+        """Is called when button is pressed"""
         self.after_intro()
 
 
 if __name__ == "__main__":
-    """for testing only"""
+    """For testing only"""
     new_window = MainWindow(None, None)
     new_window.mainloop()
 

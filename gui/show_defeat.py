@@ -11,7 +11,9 @@ __email__ = "s8978466@stud.uni-frankfurt.de"
 
 
 class DeathScreen(tk.Toplevel):
+    """A class for the death screen"""
     def __init__(self, message, extended_message, image_path):
+        """Initializes the class"""
         tk.Toplevel.__init__(self)
         self.wm_title(message)
         image = tk.PhotoImage(file=absolute_path("/" + image_path))
@@ -26,6 +28,7 @@ class DeathScreen(tk.Toplevel):
 
 
 def die_from_timer(player_name):
+    """Displays a death screen from timeout"""
     DeathScreen(
         "A slug has ended.",
         str(player_name) + " took so long to take their turn that god decided it might be enough.",
@@ -34,6 +37,7 @@ def die_from_timer(player_name):
 
 
 def die_from_being_killed(player_name):
+    """Displays a death screen from actually losing the game"""
     DeathScreen(
         str(player_name) + " died!",
         str(player_name) + " died from being stoned. Such a stoner!",
@@ -42,6 +46,7 @@ def die_from_being_killed(player_name):
 
 
 def die_from_being_a_coward(player_name):
+    """Displays a death screen from quiting"""
     screen = DeathScreen(
         str(player_name) + " is a coward worth spitting at!",
         (

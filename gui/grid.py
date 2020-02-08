@@ -15,13 +15,14 @@ DEFAULT_IMAGE = "blank.png"
 
 
 def image_in_good_size(image, pixel_height, screen_height, images_to_fit_in=1):
+    """Transforms an image into an appropriate size"""
     image = image.zoom(int(screen_height * .9) // 100)
     image = image.subsample(images_to_fit_in * pixel_height // 100)
     return image
 
 
 def absolute_path(relative_path):
-    """turns a relative path (with leading '/') into an absolute one"""
+    """Turns a relative path (with leading '/') into an absolute one"""
     base_folder = os.path.dirname(__file__)
     base_folder = str(Path(base_folder).parent)
     absolute_path_name = base_folder + relative_path
@@ -29,7 +30,7 @@ def absolute_path(relative_path):
 
 
 class Grid(tk.Frame):
-    """a class which manages the visual appearence of the grid"""
+    """A class which manages the visual appearence of the grid"""
     def __init__(self, master, queue, size=10):
         """initializes the class"""
         tk.Frame.__init__(self, master)
@@ -44,6 +45,7 @@ class Grid(tk.Frame):
         self.after(1000, self.check_print_queue)
 
     def check_print_queue(self):
+        """A listener which caches drawing commands from the draw_queue"""
         draw_queue_content = self.queue.draw_queue.get(wait_for_content=False)
         if draw_queue_content:
             if type(draw_queue_content) is tuple:
@@ -62,7 +64,7 @@ class Grid(tk.Frame):
         self.after(1000, self.check_print_queue)
 
     def update_size(self, size):
-        """generates grid of cells"""
+        """Generates grid of cells of a certain size"""
         image_filenames = os.listdir(absolute_path("/images"))
         for filename in image_filenames:
             # adapts image depending on grid size and screen size
@@ -86,7 +88,7 @@ class Grid(tk.Frame):
                 self.cells[(x, y)].grid(row=x, column=y)
 
     def draw(self, standard_image: str, *set_image_doubles):
-        """updates the images of cells which changed"""
+        """Updates the images of cells which changed"""
         all_cell_coordinates = set()
         # set_image_doubles are
         for image_name, coordinates in set_image_doubles:
@@ -100,6 +102,7 @@ class Grid(tk.Frame):
                 self.cells[coordinate].update_image(self.get_image(standard_image))
 
     def get_image(self, image_class):
+        """Gets images from an equivalence class"""
         image = self.images["blank.png"]
         grass = [
             self.images["grass1.png"],
@@ -136,7 +139,7 @@ class Grid(tk.Frame):
 
 
 if __name__ == "__main__":
-    """for testing only"""
+    """For testing only"""
     root = tk.Tk()
     test_grid = Grid(root, None)
     test_grid.pack()
