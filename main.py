@@ -16,9 +16,6 @@ def start_window():
     main_window = MainWindow(board, QUEUE)
     main_window.mainloop()
 
-    while True:
-        pass
-
 
 if __name__ == "__main__":
     start_window()
