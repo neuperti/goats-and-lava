@@ -1,5 +1,9 @@
 import tkinter as tk
 
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
+
 
 class Cell(tk.Button):
     def __init__(self, master, image: tk.PhotoImage, coordinates):
