@@ -43,7 +43,6 @@ class MainWindow(tk.Tk):
         self.grid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.console_manager.pack(side=tk.LEFT, fill=tk.Y)
         self.intro_button.pack_forget()
-        self.skip_intro_button.pack_forget()
         threading.Thread(target=lambda *args: start_game(queue, board)).start()
 
     def finish_initialisation(self):
@@ -81,6 +80,8 @@ class IntroButton(tk.Button):
             self.counter += 1
         else:
             self.configure(image=self.loading_screen)
+            self.master.skip_intro_button.pack_forget()
+            self.master.update()
             self.after_intro()
 
 
