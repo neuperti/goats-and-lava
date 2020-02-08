@@ -27,6 +27,7 @@ class MainWindow(tk.Tk):
 
     def after_intro(self, board, queue):
         self.grid = Grid(self, queue)
+        self.grid.
         self.player_manager = PlayerManager(self, queue, board, self.grid)
         self.console_manager = ConsoleManager(self, queue)
         self.player_manager.pack(side=tk.LEFT, fill=tk.Y)
@@ -70,10 +71,13 @@ class IntroButton(tk.Button):
             self.configure(image=self.loading_screen)
             self.after_intro()
 
+
 class SkipIntroButton(tk.Button):
     def __init__(self, master, after_intro):
         self.after_intro = after_intro
-        tk.Button.__init__(self, master, text = "I am impatient and want to skip the intro. :(", command=self.button_pressed)
+        tk.Button.__init__(self, master, text="I am impatient and want to skip the intro. :(",
+                           command=self.button_pressed)
+
     def button_pressed(self):
         self.after_intro()
 
