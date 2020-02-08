@@ -1,5 +1,7 @@
 import tkinter as tk
 
+from gui.options_window import OptionsWindow
+
 
 class PlayerAdder(tk.Frame):
     def __init__(self, master, queue):
@@ -160,6 +162,12 @@ class PlayerManager(tk.Frame):
         self.setup_finisher.pack(side=tk.TOP, fill=tk.X)
         self.stop_manager = StoppingManager(self, queue)
         self.stop_manager.pack(side=tk.TOP, fill=tk.X)
+        self.options_caller = tk.Button(
+            self,
+            text="Options...",
+            command=lambda *args: OptionsWindow(self.queue)
+        )
+        self.options_caller.pack(side=tk.TOP, fill=tk.X)
         self.countdown = tk.Label(text="remaining time: 30 secs")
         self.countdown.pack(side=tk.TOP, fill=tk.X)
 
@@ -167,13 +175,6 @@ class PlayerManager(tk.Frame):
         self.add_button.pack_forget()
         self.setup_finisher.pack_forget()
         self.size_changer.pack_forget()
+        self.options_caller.pack_forget()
         for player_switcher in self.player_sidebar.player_switchers.values():
             player_switcher.delete_button.pack_forget()
-        # entfert add button
-        # fügt stattdessen eine checkbox hinzu, die angibt, ob man im offensiven Modus ist
-        # Hacken setzen:
-        #    add "do" to queue
-        # Hacken entfernen:
-        #    add "dd" to queue
-        # Muss grid beim wechseln des Modus ändern
-        pass

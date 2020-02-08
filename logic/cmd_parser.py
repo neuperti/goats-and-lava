@@ -8,6 +8,7 @@ __email__ = "philipp-seiffert@gmx.de"
 
 import sys
 import subprocess
+import time
 import logic.main as main
 from gui.show_defeat import die_from_being_a_coward
 
@@ -38,7 +39,11 @@ COMMANDS = {
 
     # Board functions:
     "bs",  # [size]: Sets the boards size (Only available before any players are registered)
-    "bb"   # [position]: Bomb the given position of the Board.
+    "bb",  # [position]: Bomb the given position of the Board.
+
+    # Options:
+    "one_shoot_per_ship",
+    "rock_scattering"
 }
 
 
@@ -50,7 +55,8 @@ NO_ARG_COMMANDS = {
 
 ONE_ARG_COMMANDS = {
     "p+", "p-", "ps",
-    "bs"
+    "bs",
+    "one_shoot_per_ship", "rock_scattering"
 }
 
 TWO_ARG_COMMANDS = {
@@ -82,7 +88,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     error = None
     # Quit or restart the game:
     if order == "gq":
-        die_from_being_a_coward("somone")
+        die_from_being_a_coward("someone")
         return_value = None, None
     if order == "gr":
         subprocess.Popen(
@@ -92,6 +98,8 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         sys.exit()
 
     # error checking for amount of arguments and situation:
+    if order in {"one_shoot_per_ship", "rock_scattering"} and not initialisation_mode:
+        error = "Command " + order + " only works in initialisation mode!"
     if order not in COMMANDS:
         error = "Command " + order + " does not exist!"
     if order in NO_ARG_COMMANDS and len(arguments) != 0:
@@ -137,6 +145,20 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
             with open("logic/commands.txt", "r") as commands:
                 board.queue.print_queue.append(commands.read())
                 return_value = None, None
+        if order == "one_shoot_per_ship":
+            if arguments[0] == "True":
+                board.one_shoot_per_ship = True
+                board.queue.print_queue.append(order, " is activated.")
+            else:
+                board.one_shoot_per_ship = False
+                board.queue.print_queue.append(order, " is deactivated.")
+        if order == "rock_scattering":
+            if arguments[0] == "True":
+                board.rock_scattering = True
+                board.queue.print_queue.append(order, " is activated.")
+            else:
+                board.rock_scattering = False
+                board.queue.print_queue.append(order, " is deactivated.")
         if order == "df":
             board.queue.print_queue.append("\n" * 100)
             return_value = None, None
@@ -173,6 +195,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                 error = "Player " + player_name + " does not exist."
             elif order == "ps":
                 board.queue.print_queue.append("Switched to", player_name + ".")
+                time.sleep(5)
                 return_value = "switched to", player_name
         if order == "if":
             board.queue.print_queue.append("Finished setting up the board!")

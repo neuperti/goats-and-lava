@@ -5,7 +5,7 @@ class Cell(tk.Button):
     def __init__(self, master, image: tk.PhotoImage, coordinates):
         tk.Button.__init__(self, master, image=image, padx=0, pady=0, bd=0, relief=tk.FLAT,
                            highlightthickness=0,
-                           command=lambda *args: master.cell_function(coordinates))
+                           command=lambda *args: getattr(master, "cell_function")(coordinates))
         self.coordinates = coordinates
         self.image = None
         self.update_image(image)

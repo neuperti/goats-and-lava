@@ -18,6 +18,8 @@ class Board(main.Board):
     def __init__(self, queue, *args):
         main.Board.__init__(self, *args)
         self.queue = queue
+        self.rock_scattering = False
+        self.one_shoot_per_ship = False
 
     def change_size(self, new_size):
         """Changes the size of the board."""
@@ -38,8 +40,10 @@ class Board(main.Board):
             player_name = player_names[actual_player]
             if player_name:
                 self.player_fleets[player_name].draw_offensive()
+            # time.sleep(5)
+            # self.queue.append("df")
             time.sleep(5)
-            self.queue.append("df")
+            print("\n" * 100)
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
                     player_name,
@@ -88,6 +92,7 @@ class Board(main.Board):
                 try:
                     fleet = self.player_fleets[active_player]
                     fleet.add_ship(Ship(fleet, *arguments))
+                    self.queue.append("df")
                 except:
                     # We'll try an other time ;)
                     continue
