@@ -25,7 +25,6 @@ class MainWindow(tk.Tk):
         self.skip_intro_button = SkipIntroButton(self, lambda: self.after_intro(board, queue))
         self.skip_intro_button.pack(fill=tk.X)
 
-
     def after_intro(self, board, queue):
         self.grid = Grid(self, queue)
         self.player_manager = PlayerManager(self, queue, board, self.grid)

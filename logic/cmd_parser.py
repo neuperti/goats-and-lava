@@ -83,7 +83,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     # Quit or restart the game:
     if order == "gq":
         die_from_being_a_coward("somone")
-        sys.exit()
+        return_value = None, None
     if order == "gr":
         subprocess.Popen(
             [sys.executable, "main.py"],
