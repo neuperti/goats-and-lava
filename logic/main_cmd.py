@@ -111,18 +111,6 @@ class Board(main.Board):
 
     def bombard_fleet(self, own_name):
         """Allows user to bomb their enemies."""
-        while True:
-            # Try to get a valid order and try again if you don't
-            order, arguments = None, None
-            try:
-                order, arguments = cmd_parser(
-                    self,
-                    initialisation_mode=False,
-                    player_whose_turn_it_is=own_name
-                )
-
-            except RuntimeError:
-                pass
         shots_fired = 0
         if self.one_shoot_per_ship:
             shots_to_fire = len([

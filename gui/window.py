@@ -57,7 +57,7 @@ class MainWindow(tk.Tk):
 class IntroButton(tk.Button):
     """A class for the button which displayes the intro images"""
     def __init__(self, master, after_intro):
-        self.counter = 1
+        self.counter = 0
         self.after_intro = after_intro
         self.loading_screen = tk.PhotoImage(file=absolute_path("/intro_images/loading_screen.png"))
         self.loading_screen = image_in_good_size(self.loading_screen, self.loading_screen.height(),
