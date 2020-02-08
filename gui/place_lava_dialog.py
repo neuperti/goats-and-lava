@@ -2,6 +2,11 @@ import tkinter as tk
 import threading
 
 
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
+
+
 def crack_lava_rim_window(list_of_return_values):
     pass
 

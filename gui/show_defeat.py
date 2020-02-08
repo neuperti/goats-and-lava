@@ -5,6 +5,10 @@ import sys
 from gui.grid import absolute_path
 from gui.grid import image_in_good_size
 
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
+
 
 class DeathScreen(tk.Toplevel):
     def __init__(self, message, extended_message, image_path):

@@ -9,6 +9,10 @@ from gui.console_manager import ConsoleManager
 from gui.grid import image_in_good_size
 from gui.place_lava_dialog import crack_lava_rim
 
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
+
 
 class MainWindow(tk.Tk):
     def __init__(self, board, queue):

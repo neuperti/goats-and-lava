@@ -5,6 +5,11 @@ from gui.cells import Cell
 from random import choice, randint
 
 
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
+
+
 IMAGE_WIDTH = 1000
 DEFAULT_IMAGE = "blank.png"
 
