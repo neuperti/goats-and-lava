@@ -1,5 +1,6 @@
 """A german game called 'Schiffe Versenken', but this command line based."""
 
+
 import random
 import time
 
