@@ -43,7 +43,7 @@ class Board(main.Board):
             # time.sleep(5)
             # self.queue.append("df")
             time.sleep(5)
-            print("\n" * 100)
+            self.queue.print_queue.append("\n" * 100)
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
                     player_name,
@@ -104,18 +104,45 @@ class Board(main.Board):
 
     def bombard_fleet(self, own_name):
         """allows user to bomb his enemies."""
+        shots_fired = 0
+        if self.one_shoot_per_ship:
+            shots_to_fire = len([
+                ship for ship in self.player_fleets[own_name].ships if ship
+            ]) - 1
+            self.queue.print_queue.append(
+                "You have", str(shots_to_fire),
+                "lava rims left, and thus may fire",
+                str(shots_to_fire), "times."
+            )
+        else:
+            shots_to_fire = None
         while True:
             # Try to get a valid order and try again if you don't
             order = None
-            try:
-                order, arguments = cmd_parser(
-                    self,
-                    initialisation_mode=False,
-                    player_whose_turn_it_is=own_name
-                )
-
-            except RuntimeError:
-                pass
+            if (not shots_fired) or (not self.rock_scattering):
+                # we ask for manuel shooting for the first shot and if we are not scattering
+                # the rocks:
+                try:
+                    order, arguments = cmd_parser(
+                        self,
+                        initialisation_mode=False,
+                        player_whose_turn_it_is=own_name
+                    )
+                except RuntimeError:
+                    pass
+            else:
+                # We scatter the rocks:
+                time.sleep(1)
+                last_shooting_position = arguments
+                possible_new_shooting_positions = {
+                    (
+                        last_shooting_position[0] + x,
+                        last_shooting_position[1] + y
+                    ) for x in range(-1, 2) for y in range(3)
+                } & self
+                possible_new_shooting_positions = list(possible_new_shooting_positions)
+                order = "shoot"
+                arguments = random.choice(possible_new_shooting_positions)
             if not order:
                 pass
             elif order == "died from timer!":
@@ -124,14 +151,22 @@ class Board(main.Board):
                 del self.player_fleets[own_name]
                 break
             elif order is "shoot":
+                print("this should happen:", order, arguments)
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
                 if successful_hit:
                     self.queue.print_queue.append("Successfully hit " + str(successful_hit)
                                                   + " targets!")
                     self.player_fleets[own_name].draw_offensive()
+                    shots_fired += 1
+                    if shots_to_fire == 0:
+                        break
                 else:
                     self.queue.print_queue.append("Awww naaah, you missed...")
-                    break
+                    if type(shots_to_fire) is int:
+                        self.player_fleets[own_name].draw_offensive()
+                    if not shots_to_fire:
+                        break
+                shots_to_fire -= 1
             else:
                 raise Exception("This shouldn't happen:", order, arguments)
 

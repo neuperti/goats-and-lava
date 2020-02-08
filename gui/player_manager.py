@@ -6,6 +6,7 @@ __author__ = "6666888, Neuperti, 7157367, Seiffert"
 __credit__ = "immense time pressure"
 __email__ = "s8978466@stud.uni-frankfurt.de"
 
+
 class PlayerAdder(tk.Frame):
     """A class for adding players"""
     def __init__(self, master, queue):

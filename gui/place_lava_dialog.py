@@ -7,22 +7,6 @@ __credit__ = "immense time pressure"
 __email__ = "s8978466@stud.uni-frankfurt.de"
 
 
-def crack_lava_rim_window(list_of_return_values):
-    pass
-
-
-def crack_lava_rim(coordinate, window):
-    return_values = []
-    threading.Thread(target=lambda *args: crack_lava_rim_window(return_values)).start()
-    while not return_values:
-        pass
-    return return_values
-
-
-def crack_lava_rim_window(list_of_return_values, coordinate):
-    pass
-
-
 class AskForDirection(tk.Toplevel):
     def __init__(self, direction):
         tk.Toplevel.__init__(self)
@@ -81,7 +65,6 @@ def make_command_from_lists(coordinates, direction_list, length_list, queue,
                             ask_for_direction_window, ask_for_length_window):
     while not direction_list or not length_list:
         pass
-    queue.append(return_values[0])
 
     command = (
         "s+ "
