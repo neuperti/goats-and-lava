@@ -212,7 +212,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                         "w": [0, -1]
                     }[direction]
                     return_value = "make ship", (position, length, direction)
-            finally:
+            except:
                 pass
     if error:
         board.queue.print_queue.append(error)

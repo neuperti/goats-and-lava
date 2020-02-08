@@ -196,6 +196,7 @@ class Fleet(set):
         """Adds a ship to the board, where the ship is a set of positions tuples."""
         self.update(ship)
         self.ships.append(ship)
+        self.draw_defensive()
 
     def draw_defensive(self):
         """Draws the state of the fleet."""
