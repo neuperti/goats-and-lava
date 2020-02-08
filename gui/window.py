@@ -94,6 +94,7 @@ class SkipIntroButton(tk.Button):
 
     def button_pressed(self):
         """Is called when button is pressed"""
+        self.pack_forget()
         self.after_intro()
 
 
