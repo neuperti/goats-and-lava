@@ -4,10 +4,9 @@ import random
 from tkinter.messagebox import askyesno
 from gui.show_defeat import die_from_being_killed
 
-
-__author__ = "7157367, Seiffert"
-__credits__ = """To my loving mother, sister, and for the sake of humanity."""
-__email__ = "philipp-seiffert@gmx.de"
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
 
 
 class Board(set):
@@ -83,6 +82,7 @@ as a cookie!")
         return successes
 
     def bombard_fleet(self, own_name):
+        """Manages the bombardment of the opposing fleet"""
         # draw our own fleet:
         self.player_fleets[own_name].draw_defensive()
         # start the shooting!:
@@ -200,25 +200,7 @@ class Fleet(set):
 
     def draw_defensive(self):
         """Draws the state of the fleet."""
-        """lines = [
-            "your fleet (# is your boat, x shows sunk boats):",
-            "+" + "-" * self.board.size + "+"
-        ]
-        for x in range(1, self.board.size+1):
-            new_line = "|"
-            for y in range(1, self.board.size+1):
-                pos = (x, y)
-                if pos in self.taken_hits:
-                    sign = "x"
-                elif pos in self:
-                    sign = "#"
-                else:
-                    sign = " "
-                new_line += sign
-             new_line += "|"
-            lines.append(new_line)
-        lines.append("+" + "-" * self.board.size + "+")
-        print("\n".join(lines))"""
+        # optional To Do: adding stone on grass
         self.board.queue.draw_queue.append((
             "grass",
             ("lava", self),
@@ -227,25 +209,6 @@ class Fleet(set):
 
     def draw_offensive(self):
         """Draws the board for a specific player to shoot."""
-        """lines = [
-            "the board (~ means you missed, x you hit):",
-            "+" + "-" * self.board.size + "+"
-        ]
-        for x in range(1, self.board.size+1):
-            new_line = "|"
-            for y in range(1, self.board.size+1):
-                pos = (x, y)
-                if pos in self.positions_hit:
-                    sign = "x"
-                elif pos in self.positions_missed:
-                    sign = "~"
-                else:
-                    sign = " "
-                new_line += sign
-            new_line += "|"
-            lines.append(new_line)
-        lines.append("+" + "-" * self.board.size + "+")
-        print("\n".join(lines))"""
         self.board.queue.draw_queue.append((
             "blank",
             ("stone_lava", self.positions_hit),
@@ -329,7 +292,7 @@ def start_game():
 
 def main():
     """The loop to start and restart games:"""
-    start_game()  # ToDo: Add restart/stop functionality.
+    start_game()
 
 
 if __name__ == "__main__":

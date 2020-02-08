@@ -9,13 +9,14 @@ from gui.show_defeat import die_from_timer
 cmd_parser = cmd_module.cmd_parser
 
 
-__author__ = "7157367, Seiffert"
-__credits__ = "To my loving mother, sister, and for the sake of humanity."
-__email__ = "philipp-seiffert@gmx.de"
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
 
 
 class Board(main.Board):
     def __init__(self, queue, *args):
+        """Initializes the class"""
         main.Board.__init__(self, *args)
         self.queue = queue
 
@@ -98,10 +99,10 @@ class Board(main.Board):
                 )
 
     def bombard_fleet(self, own_name):
-        """allows user to bomb his enemies."""
+        """Allows user to bomb their enemies."""
         while True:
             # Try to get a valid order and try again if you don't
-            order = None
+            order, arguments = None, None
             try:
                 order, arguments = cmd_parser(
                     self,
@@ -136,6 +137,7 @@ class Ship(main.Ship):
 
 
 def start_game(queue, board):
+    """Atarts the game"""
     print(board.intro)
     board.initialize_fleets()
     board.main_loop()

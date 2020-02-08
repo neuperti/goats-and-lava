@@ -1,9 +1,9 @@
 """Some helper functions for our command line interface."""
 
 
-__author__ = "7157367, Seiffert"
-__credits__ = """To my loving mother, sister, and for the sake of humanity."""
-__email__ = "philipp-seiffert@gmx.de"
+__author__ = "6666888, Neuperti, 7157367, Seiffert"
+__credit__ = "immense time pressure"
+__email__ = "s8978466@stud.uni-frankfurt.de"
 
 
 import sys
@@ -63,7 +63,9 @@ FOUR_ARG_COMMANDS = {
 
 
 class Fleet(main.Fleet):
+    """Inherits from the fleet class of main.py"""
     def is_ready(self):
+        """Checks if the conditions for a legal fleet are met"""
         if len(self) > len(self.board) * .1 and len(self.ships) >= 2:
             return True
         else:
