@@ -17,6 +17,7 @@ __email__ = "philipp-seiffert@gmx.de"
 class Board(main.Board):
     def __init__(self, queue, *args):
         main.Board.__init__(self, *args)
+        self.window = None
         self.queue = queue
         self.rock_scattering = False
         self.one_shoot_per_ship = False
@@ -38,6 +39,9 @@ class Board(main.Board):
         )
         while len(self.player_fleets) > 1:
             player_name = player_names[actual_player]
+            self.window.player_manager.player_sidebar.give_focus_to_player(
+                self.window.player_manager.player_sidebar.player_switchers[player_name]
+            )
             if player_name:
                 self.player_fleets[player_name].draw_offensive()
             # time.sleep(5)
@@ -166,7 +170,8 @@ class Board(main.Board):
                         self.player_fleets[own_name].draw_offensive()
                     if not shots_to_fire:
                         break
-                shots_to_fire -= 1
+                if type(shots_to_fire) is int:
+                    shots_to_fire -= 1
             else:
                 raise Exception("This shouldn't happen:", order, arguments)
 

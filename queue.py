@@ -31,11 +31,11 @@ class Queue(list):
                 return None
         return self.pop(0)
 
-    def append(self, *new_command):
+    def append(self, *new_command, wait_for_response=True):
         try:
             new_command = " ".join(new_command)
         except:
             new_command = new_command[0]
         list.append(self, new_command)
-        if not self.is_response_queue:
+        if wait_for_response and not self.is_response_queue:
             return self.response_queue.get()
