@@ -43,7 +43,8 @@ COMMANDS = {
 
     # Options:
     "one_shoot_per_ship",
-    "rock_scattering"
+    "rock_scattering",
+    "thinking_time"
 }
 
 
@@ -56,7 +57,7 @@ NO_ARG_COMMANDS = {
 ONE_ARG_COMMANDS = {
     "p+", "p-", "ps",
     "bs",
-    "one_shoot_per_ship", "rock_scattering"
+    "one_shoot_per_ship", "rock_scattering", "thinking_time"
 }
 
 TWO_ARG_COMMANDS = {
@@ -81,7 +82,7 @@ class Fleet(main.Fleet):
 def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     """Lets player enter a command and process it."""
     # Take input, which may be predefined:
-    command = board.queue.get(remaining_thinking_time=30).split()
+    command = board.queue.get(remaining_thinking_time=board.thinking_time).split()
     if command[0] == "failed!":
         board.queue.response_queue.append(False)
         return "died from timer!", None
@@ -100,7 +101,9 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         sys.exit()
 
     # error checking for amount of arguments and situation:
-    if order in {"one_shoot_per_ship", "rock_scattering"} and not initialisation_mode:
+    if order in {
+        "one_shoot_per_ship", "rock_scattering", "thinking_time"
+    } and not initialisation_mode:
         error = "Command " + order + " only works in initialisation mode!"
     if order not in COMMANDS:
         error = "Command " + order + " does not exist!"
@@ -147,6 +150,12 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
             with open("logic/commands.txt", "r") as commands:
                 board.queue.print_queue.append(commands.read())
                 return_value = None, None
+        if order == "thinking_time":
+            if not arguments[0].isdigit():
+                error = "Thinking time must be a digit!"
+            else:
+                board.thinking_time = int(arguments[0])
+                board.queue.print_queue.append("Thinking time set to", arguments[0])
         if order == "one_shoot_per_ship":
             if arguments[0] == "True":
                 board.one_shoot_per_ship = True

@@ -24,6 +24,9 @@ class OptionsWindow(tk.Toplevel):
             variable=rock_scattering_var
         )
         rock_scattering.pack(side=tk.TOP, fill=tk.X)
+        tk.Label(self, text="Seconds to think:").pack(side=tk.TOP, fill=tk.X)
+        self.thinking_time = tk.Entry(self, text="30")
+        self.thinking_time.pack(side=tk.TOP, fill=tk.X)
         close_button = tk.Button(
             self,
             text="Save my preferences.",
@@ -43,4 +46,5 @@ class OptionsWindow(tk.Toplevel):
             self.queue.append("rock_scattering True")
         else:
             self.queue.append("rock_scattering False")
+        self.queue.append("thinking_time " + self.thinking_time.get())
         self.destroy()

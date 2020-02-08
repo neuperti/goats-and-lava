@@ -23,6 +23,7 @@ class Board(main.Board):
         self.queue = queue
         self.rock_scattering = False
         self.one_shoot_per_ship = False
+        self.thinking_time = 30
 
     def change_size(self, new_size):
         """Changes the size of the board."""
