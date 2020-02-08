@@ -5,7 +5,9 @@ __credit__ = "immense time pressure"
 __email__ = "s8978466@stud.uni-frankfurt.de"
 
 class PlayerAdder(tk.Frame):
+    """A class for adding players"""
     def __init__(self, master, queue):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         text_field = tk.Entry(self)
         text_field.pack(side=tk.LEFT, fill=tk.X, expand=1)
@@ -20,7 +22,9 @@ class PlayerAdder(tk.Frame):
 
 
 class StoppingManager(tk.Frame):
+    """A class for exiting or restarting the game"""
     def __init__(self, master, queue):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         tk.Button(
             self,
@@ -35,7 +39,9 @@ class StoppingManager(tk.Frame):
 
 
 class SetupFinisher(tk.Frame):
+    """A class for finishing the setting-up-process"""
     def __init__(self, master, queue):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         setup_finisher = tk.Button(
             self,
@@ -48,7 +54,9 @@ class SetupFinisher(tk.Frame):
 
 
 class SizeChanger(tk.Frame):
+    """A class for changing the dimensions of the grid"""
     def __init__(self, master, queue):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         confirm_size = tk.Button(self, text="Change size:")
         confirm_size.pack(side=tk.LEFT)
@@ -60,7 +68,9 @@ class SizeChanger(tk.Frame):
 
 
 class PlayerSwitcher(tk.Frame):
+    """A class for switching betwween players by clicking on their buttons"""
     def __init__(self, master, player_name):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         name_viewer = tk.Button(self, text=player_name, command=lambda *args: master.switch_player(
             player_name
@@ -75,7 +85,9 @@ class PlayerSwitcher(tk.Frame):
 
 
 class ViewSwitcher(tk.Frame):
+    """A class for switching betweeen offensive and defensive mode via button"""
     def __init__(self, master, queue):
+        """Initializes the class"""
         self.view_mode = tk.StringVar()
         self.queue = queue
         tk.Frame.__init__(self, master)
@@ -94,7 +106,9 @@ class ViewSwitcher(tk.Frame):
 
 
 class PlayerSidebar(tk.Frame):
+    """A class managing the sidebar of players"""
     def __init__(self, master, queue, grid, board):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         self.queue = queue
         self.board = board
@@ -102,6 +116,7 @@ class PlayerSidebar(tk.Frame):
         self.player_switchers = dict()
 
     def give_focus_to_player(self, player_switcher):
+        """Switches the visual focus when player button is pressed"""
         for switcher in self.player_switchers.values():
             switcher.name_viewer.config(relief=tk.RAISED)
             switcher.name_viewer.config(state=tk.NORMAL)
@@ -123,6 +138,7 @@ class PlayerSidebar(tk.Frame):
     # verwaltet Liste von Spielernamen und Buttons
     # Bei klick von button: self.queue.append("ps " + button.text)
     def add_player(self, player_name):
+        """Adds a new player in the setup process"""
         if self.queue.append("p+ " + player_name):
             player_switcher = PlayerSwitcher(self, player_name)
             player_switcher.pack(side=tk.TOP, fill=tk.X)
@@ -130,23 +146,22 @@ class PlayerSidebar(tk.Frame):
             self.give_focus_to_player(player_switcher)
 
     def remove_player(self, player_name):
+        """removes a player in the setup process"""
         if self.queue.append("p- " + player_name):
             self.player_switchers[player_name].pack_forget()
             del self.player_switchers[player_name]
             self.give_focus_to_player(PlayerSwitcher(self, ""))
 
     def switch_player(self, player_name):
+        """switches between players in the setup process"""
         if self.queue.append("ps " + player_name):
             self.give_focus_to_player(self.player_switchers[player_name])
 
 
 class PlayerManager(tk.Frame):
-    # Bekommt queue übergeben und gibt die an PlayerSidebar weiter
-    # Enthält PlayerSidebar
-    # Ethält Eingabefeld und Plus-Button
-    # Bei Klick auf Plus:
-    #    add "p+ " + eingabewert in queue.
+    """A class for managing the player sidebar and the buttons below"""
     def __init__(self, master, queue, board, grid):
+        """Initializes the class"""
         tk.Frame.__init__(self, master)
         self.grid = grid
         self.queue = queue
@@ -167,6 +182,7 @@ class PlayerManager(tk.Frame):
         self.countdown.pack(side=tk.TOP, fill=tk.X)
 
     def finish_initialisation(self):
+        """Is called by the SetupFinisher and removes the initialization buttons"""
         self.add_button.pack_forget()
         self.setup_finisher.pack_forget()
         self.size_changer.pack_forget()

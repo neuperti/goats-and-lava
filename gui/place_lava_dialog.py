@@ -18,6 +18,7 @@ def crack_lava_rim(coordinate, window):
         pass
     return return_values
 
+
 def crack_lava_rim_window(list_of_return_values, coordinate):
     pass
 
