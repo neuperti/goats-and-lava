@@ -1,6 +1,8 @@
 """A german game called 'Schiffe Versenken', but this command line based."""
 
 import random
+import time
+
 import logic.main as main
 import logic.cmd_parser as cmd_module
 from gui.show_defeat import die_from_timer
@@ -36,6 +38,7 @@ class Board(main.Board):
             player_name = player_names[actual_player]
             if player_name:
                 self.player_fleets[player_name].draw_offensive()
+            time.sleep(5)
             self.queue.append("df")
             if player_name not in self.player_fleets:
                 self.queue.print_queue.append(
@@ -118,7 +121,9 @@ class Board(main.Board):
             elif order is "shoot":
                 successful_hit = self.shoot_at_given_positions(arguments, own_name)
                 if successful_hit:
-                    self.queue.print_queue.append("Successfully hit " + str(successful_hit) + " targets!")
+                    self.queue.print_queue.append("Successfully hit " + str(successful_hit)
+                                                  + " targets!")
+                    self.player_fleets[own_name].draw_offensive()
                 else:
                     self.queue.print_queue.append("Awww naaah, you missed...")
                     break

@@ -7,6 +7,7 @@ from gui.player_manager import PlayerManager
 from gui.grid import absolute_path
 from gui.console_manager import ConsoleManager
 from gui.grid import image_in_good_size
+from gui.place_lava_dialog import crack_lava_rim
 
 
 class MainWindow(tk.Tk):
@@ -27,7 +28,7 @@ class MainWindow(tk.Tk):
 
     def after_intro(self, board, queue):
         self.grid = Grid(self, queue)
-        self.grid.
+        self.grid.cell_function = lambda coordinates: crack_lava_rim(coordinates, self.queue)
         self.player_manager = PlayerManager(self, queue, board, self.grid)
         self.console_manager = ConsoleManager(self, queue)
         self.player_manager.pack(side=tk.LEFT, fill=tk.Y)

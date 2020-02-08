@@ -4,7 +4,8 @@ import tkinter as tk
 class Cell(tk.Button):
     def __init__(self, master, image: tk.PhotoImage, coordinates):
         tk.Button.__init__(self, master, image=image, padx=0, pady=0, bd=0, relief=tk.FLAT,
-                           highlightthickness=0, command=lambda *args: master.cell_function(coordinates))
+                           highlightthickness=0,
+                           command=lambda *args: master.cell_function(coordinates))
         self.coordinates = coordinates
         self.image = None
         self.update_image(image)
@@ -12,6 +13,7 @@ class Cell(tk.Button):
     def update_image(self, image):
         self.image = image
         self.configure(image=image)
+
 
 #### to send to grid
 if __name__ == "__main__":
@@ -28,4 +30,3 @@ if __name__ == "__main__":
     new_cell = Cell(root, image, (1, 2))
     new_cell.pack()
     root.mainloop()
-    
