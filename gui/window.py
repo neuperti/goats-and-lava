@@ -43,7 +43,6 @@ class MainWindow(tk.Tk):
         self.grid.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.console_manager.pack(side=tk.LEFT, fill=tk.Y)
         self.intro_button.pack_forget()
-        self.skip_intro_button.pack_forget()
         threading.Thread(target=lambda *args: start_game(queue, board)).start()
 
     def finish_initialisation(self):
@@ -57,7 +56,7 @@ class MainWindow(tk.Tk):
 class IntroButton(tk.Button):
     """A class for the button which displayes the intro images"""
     def __init__(self, master, after_intro):
-        self.counter = 1
+        self.counter = 0
         self.after_intro = after_intro
         self.loading_screen = tk.PhotoImage(file=absolute_path("/intro_images/loading_screen.png"))
         self.loading_screen = image_in_good_size(self.loading_screen, self.loading_screen.height(),
@@ -81,6 +80,8 @@ class IntroButton(tk.Button):
             self.counter += 1
         else:
             self.configure(image=self.loading_screen)
+            self.master.skip_intro_button.pack_forget()
+            self.master.update()
             self.after_intro()
 
 
@@ -93,6 +94,7 @@ class SkipIntroButton(tk.Button):
 
     def button_pressed(self):
         """Is called when button is pressed"""
+        self.pack_forget()
         self.after_intro()
 
 
