@@ -44,6 +44,8 @@ class MainWindow(tk.Tk):
         self.console_manager.pack(side=tk.LEFT, fill=tk.Y)
         self.intro_button.pack_forget()
         threading.Thread(target=lambda *args: start_game(queue, board)).start()
+        tk.Toplevel().destroy()  # to can use tk.Toplevel in other threads, we must use it from
+        # main thread once.
 
     def finish_initialisation(self):
         """Handles the finishing of the initialization process"""
@@ -94,8 +96,8 @@ class SkipIntroButton(tk.Button):
 
     def button_pressed(self):
         """Is called when button is pressed"""
-        self.pack_forget()
-        self.after_intro()
+        self.master.intro_button.counter = 7
+        self.master.intro_button.button_pressed()
 
 
 if __name__ == "__main__":

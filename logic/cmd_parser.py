@@ -9,8 +9,10 @@ __email__ = "s8978466@stud.uni-frankfurt.de"
 import sys
 import subprocess
 import time
+import threading
 import logic.main as main
 from gui.show_defeat import die_from_being_a_coward
+from gui.show_defeat import finish_game
 
 
 COMMANDS = {
@@ -41,6 +43,10 @@ COMMANDS = {
     "bs",  # [size]: Sets the boards size (Only available before any players are registered)
     "bb",  # [position]: Bomb the given position of the Board.
 
+    # Quitting/Restarting:
+    "gq",  # Quits the game
+    "gr",   # Restarts the game
+
     # Options:
     "one_shoot_per_ship",
     "rock_scattering",
@@ -51,7 +57,8 @@ COMMANDS = {
 NO_ARG_COMMANDS = {
     "?i", "?c",
     "df", "dd", "do",
-    "if"
+    "if",
+    "gq", "gr"
 }
 
 ONE_ARG_COMMANDS = {
@@ -89,16 +96,6 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     return_value = None, None
     order, *arguments = command
     error = None
-    # Quit or restart the game:
-    if order == "gq":
-        die_from_being_a_coward("someone")
-        return_value = None, None
-    if order == "gr":
-        subprocess.Popen(
-            [sys.executable, "main.py"],
-            creationflags=subprocess.CREATE_NEW_CONSOLE, cwd=".",
-        )
-        sys.exit()
 
     # error checking for amount of arguments and situation:
     if order in {
@@ -139,6 +136,8 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         error = "You can't change the boards size after you registered any players!"
     if order == "bb" and initialisation_mode:
         error = "You can't just bomb around whilst gardening, that's a war crime!"
+    if board.quit:
+        error = "You already exited the game, so you can't do this anymore!"
 
     if not error:
         # doing commands that can always be done:
@@ -248,6 +247,17 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                     return_value = "make ship", (position, length, direction)
             except:
                 pass
+        # Quit or restart the game:
+        if order == "gq":
+            die_from_being_a_coward("someone", board)
+            board.quit = True  # meaning we can't enter any commands anymore.
+            return_value = None, None
+        if order == "gr":
+            subprocess.Popen(
+                [sys.executable, "main.py"],
+                creationflags=subprocess.DETACHED_PROCESS, cwd=".",
+            )
+            finish_game(board.window)
     if error:
         board.queue.print_queue.append(error)
         board.queue.response_queue.append(False)

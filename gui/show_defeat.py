@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+import os
 import sys
 
 from gui.grid import absolute_path
@@ -24,7 +24,8 @@ class DeathScreen(tk.Toplevel):
         )
         tk.Label(self, image=self.image).pack(side=tk.TOP, fill=tk.BOTH, expand=1)
         tk.Label(self, text=extended_message).pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-        tk.Button(self, text="Yay!", command=self.destroy).pack(side=tk.TOP, fill=tk.X)
+        self.button = tk.Button(self, text="Yay!", command=self.destroy)
+        self.button.pack(side=tk.TOP, fill=tk.X)
 
 
 def die_from_timer(player_name):
@@ -45,7 +46,13 @@ def die_from_being_killed(player_name):
     )
 
 
-def die_from_being_a_coward(player_name):
+def finish_game(*screens):
+    for screen in screens:
+        screen.destroy()
+    os._exit(0)
+
+
+def die_from_being_a_coward(player_name, board):
     """Displays a death screen from quiting"""
     screen = DeathScreen(
         str(player_name) + " is a coward worth spitting at!",
@@ -55,4 +62,6 @@ stopped!\nEveryone but this monster thus is a winner and allowed to celebrate!"
         ),
         "icon/depp.png"
     )
-    screen.after(30_000, lambda *args: sys.exit())
+    screen.button.configure(
+        command=lambda *args: finish_game(screen, board.window)
+    )
