@@ -147,6 +147,8 @@ class PlayerSidebar(tk.Frame):
             player_switcher.pack(side=tk.TOP, fill=tk.X)
             self.player_switchers[player_name] = player_switcher
             self.give_focus_to_player(player_switcher)
+        else:
+            print("rejected player name!")
 
     def remove_player(self, player_name):
         """removes a player in the setup process"""

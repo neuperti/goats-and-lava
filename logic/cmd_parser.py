@@ -92,8 +92,9 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
     command = board.queue.get(remaining_thinking_time=board.thinking_time).split()
     if command[0] == "failed!":
         board.queue.response_queue.append(False)
-        return "died from timer!", None
-    return_value = None, None
+        return_value = "died from timer!", None
+    else:
+        return_value = None, None
     order, *arguments = command
     error = None
 
@@ -102,7 +103,7 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
         "one_shoot_per_ship", "rock_scattering", "thinking_time"
     } and not initialisation_mode:
         error = "Command " + order + " only works in initialisation mode!"
-    if order not in COMMANDS:
+    if order not in COMMANDS | {"failed!"}:
         error = "Command " + order + " does not exist!"
     if order in NO_ARG_COMMANDS and len(arguments) != 0:
         error = "Command " + order + " takes exactly one argument!"
@@ -249,9 +250,11 @@ def cmd_parser(board, initialisation_mode=False, player_whose_turn_it_is=None):
                 pass
         # Quit or restart the game:
         if order == "gq":
+            board.queue.response_queue.append(True)
             die_from_being_a_coward("someone", board)
             board.quit = True  # meaning we can't enter any commands anymore.
             return_value = None, None
+            return None, None
         if order == "gr":
             subprocess.Popen(
                 [sys.executable, "main.py"],
